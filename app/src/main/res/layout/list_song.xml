@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/txtIdSong"
+        android:layout_width="48dp"
+        android:layout_height="60dp"
+        android:text="ID"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <ImageView
+        android:id="@+id/imgSong"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_toEndOf="@+id/txtIdSong"/>
+
+    <TextView
+        android:id="@+id/txtNameSong"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Name song"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_toEndOf="@id/imgSong"
+        android:padding="4dp"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/txtSinger"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Singer"
+        android:textSize="16sp"
+        android:layout_toEndOf="@id/imgSong"
+        android:layout_below="@id/txtNameSong"
+        android:padding="4dp"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:text="00:00"
+        android:textSize="20sp"
+        android:padding="5dp"
+        android:gravity="center"
+        android:layout_marginStart="300dp"/>
 
 </RelativeLayout>
