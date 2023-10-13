@@ -7,11 +7,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyViewHolder extends RecyclerView.ViewHolder {
-    ImageView imgSong;
-    TextView idSong, nameSong, singer, time;
+public class ListSongViewHolder extends RecyclerView.ViewHolder {
+    public ImageView imgSong;
+    public TextView idSong, nameSong, singer, time;
 
-    public MyViewHolder(@NonNull View itemView) {
+    public ListSongViewHolder(@NonNull View itemView) {
         super(itemView);
 
         imgSong = itemView.findViewById(R.id.imgSong);

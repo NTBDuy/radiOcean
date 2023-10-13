@@ -1,4 +1,4 @@
-package com.duy.radiocean;
+package com.duy.radiocean.model;
 
 public class Song {
     Integer id_song;
