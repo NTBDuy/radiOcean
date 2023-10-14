@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.duy.radiocean.R;
+import com.duy.radiocean.adapter.AlbumSongAdapter;
 import com.duy.radiocean.adapter.ListSongAdapter;
 import com.duy.radiocean.model.Song;
 
@@ -30,6 +32,11 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private static final String TAG = "MainActivity";
+    //vars
+    private ArrayList<String> mNames = new ArrayList<>();
+    private ArrayList<String> mImageUrls = new ArrayList<>();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -79,7 +86,11 @@ public class HomeFragment extends Fragment {
                   @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        loadLst(view);
+        loadAlbum(view);
+    }
 
+    private void loadLst(@NonNull View view) {
         List<Song> items = new ArrayList<Song>();
         items.add(new Song(1, "Nhạc hay", "The Big", "4:20", R.drawable.a));
         items.add(new Song(2, "Ca khúc ưa thích", "Ca sĩ nổi tiếng", "3:45", R.drawable.a));
@@ -93,9 +104,32 @@ public class HomeFragment extends Fragment {
         items.add(new Song(10, "Nhạc dance sôi động", "DJ nổi tiếng", "3:50", R.drawable.a));
 
         RecyclerView recyclerView
-                = view.findViewById(R.id.recyclerView);
+                = view.findViewById(R.id.recyclerViewListSong);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new ListSongAdapter(getActivity(), items));
     }
 
+    private void loadAlbum(@NonNull View view){
+        mImageUrls.add("https://i.pinimg.com/564x/2e/a0/1a/2ea01a8f3eed75cc20edf64f217fae00.jpg");
+        mNames.add("Album 1");
+        mImageUrls.add("https://i.pinimg.com/736x/96/4a/de/964ade8967fec3aaaf38d2b39a0ae040.jpg");
+        mNames.add("Album 1");
+        mImageUrls.add("https://i.pinimg.com/564x/2e/a0/1a/2ea01a8f3eed75cc20edf64f217fae00.jpg");
+        mNames.add("Album 1");
+        mImageUrls.add("https://i.pinimg.com/736x/96/4a/de/964ade8967fec3aaaf38d2b39a0ae040.jpg");
+        mNames.add("Album 1");
+        mImageUrls.add("https://i.pinimg.com/564x/4f/86/77/4f867765bba422b17e3b450af42e7df1.jpg");
+        mNames.add("Album 1");
+        mImageUrls.add("https://i.pinimg.com/564x/4f/86/77/4f867765bba422b17e3b450af42e7df1.jpg");
+        mNames.add("Album 1");
+        mImageUrls.add("https://i.pinimg.com/564x/4f/86/77/4f867765bba422b17e3b450af42e7df1.jpg");
+        mNames.add("Album 1");
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView recyclerView
+                = view.findViewById(R.id.recyclerViewAlbum);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        AlbumSongAdapter adapter = new AlbumSongAdapter(getActivity(), mNames, mImageUrls);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+    }
 }
