@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
     tools:context=".fragment.HomeFragment">
+
+    <RelativeLayout
+        android:id="@+id/mainDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="310dp"
+        >
+        <TextView
+            android:id="@+id/TextPopular"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Top Albums"
+            android:textSize="30dp"
+            android:layout_marginLeft="20dp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAlbum"
+            android:layout_below="@+id/TextPopular"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layoutPopular"
@@ -26,14 +53,15 @@
             android:textStyle="italic" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recyclerViewListSong"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
             android:elevation="2dp"
             android:background="@drawable/border_list_song"
-            android:padding="10dp" />
+            android:padding="10dp"
+            />
 
     </RelativeLayout>
 
