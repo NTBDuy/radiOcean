@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".fragment.HomeFragment">
+
+    <RelativeLayout
+        android:id="@+id/mainDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="310dp"
+        >
+        <TextView
+            android:id="@+id/TextPopular"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Top Albums"
+            android:textSize="30dp"
+            android:layout_marginLeft="20dp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAlbum"
+            android:layout_below="@+id/TextPopular"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutPopular"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="283dp"
+        android:layout_above="@id/layoutPlaying">
+
+        <TextView
+            android:id="@+id/txtTitlePopular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="Popular"
+            android:textSize="30dp"
+            android:textStyle="italic" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewListSong"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="80dp"
+            android:elevation="2dp"
+            android:background="@drawable/border_list_song"
+            android:padding="10dp"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutPlaying"
+        android:layout_width="401dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="679dp"
+        android:padding="10dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/border_playing_song">
+
+        <ImageView
+            android:id="@+id/imgSongPlaying"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:background="@drawable/a"/>
+
+        <TextView
+            android:id="@+id/txtNameSongPlaying"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:text="Name song playing "
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:singleLine="true"
+            android:layout_toEndOf="@id/imgSongPlaying"
+            android:padding="2dp"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/txtSingerPlaying"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:text="Singer playing"
+            android:textSize="18sp"
+            android:layout_toEndOf="@id/imgSongPlaying"
+            android:layout_below="@id/txtNameSongPlaying"
+            android:padding="2dp"
+            android:layout_marginStart="10dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/baseline_play_arrow_24"/>
+
+
+    </RelativeLayout>
+</FrameLayout>

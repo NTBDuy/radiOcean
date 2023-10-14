@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="bg_navbar">#D0D0D0</color>
+    <color name="bg_playing">#F5E2E2</color>
 </resources>
