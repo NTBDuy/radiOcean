@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".authentication.Register">
+    <RelativeLayout
+        android:id="@+id/fullscreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <TextView
+            android:id="@+id/Register_View"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120dp"
+            android:text="RadiOcean"
+            android:textAlignment="center"
+            android:textSize="40dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="30dp"
+            android:fontFamily="sans-serif-condensed-medium"
+
+            />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="CREATE"
+            android:background="@drawable/beautiful_button"
+            android:textStyle="bold"
+            />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
+            android:hint="   Email"
+            android:layout_below="@+id/Register_View"
+            android:layout_width="300dp"
+            android:minHeight="48dp"
+            android:background="@drawable/beautiful_edittext"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name"
+            android:hint="   Name"
+            android:background="@drawable/beautiful_edittext"
+            android:layout_below="@+id/email"
+            android:layout_width="300dp"
+            android:minHeight="48dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/gender"
+            android:hint="   Gender"
+            android:background="@drawable/beautiful_edittext"
+            android:layout_below="@+id/name"
+            android:layout_width="300dp"
+            android:minHeight="48dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:hint="   Password"
+            android:background="@drawable/beautiful_edittext"
+            android:minHeight="48dp"
+            android:layout_below="@+id/gender"
+            android:layout_width="300dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/login_in_regPage"
+            android:layout_below="@id/btnRegister"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Click to Log in"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,16 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="PROFILE PAGE"
-        android:textSize="50sp"
-        android:gravity="center"/>
+        android:background="@drawable/gradient_background"
+        >
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/Profile_avatar"
+            android:layout_height="90dp"
+            android:layout_width="90dp"
+            android:text="P"
+            android:textAlignment="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="60dp"
+            android:textSize="70dp"
+            android:background="@drawable/circle_background"
+            />
+        <TextView
+            android:id="@+id/name"
+            android:text="Name here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/Profile_avatar"
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textSize="30dp"
+            />
+        <TextView
+            android:id="@+id/email"
+            android:text="Email here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_toRightOf="@+id/Profile_avatar"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textSize="20dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="LOG OUT"
+            android:id="@+id/btnLogout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="500dp"
+            android:background="@drawable/beautiful_button"
+            android:textStyle="bold"
+            />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
