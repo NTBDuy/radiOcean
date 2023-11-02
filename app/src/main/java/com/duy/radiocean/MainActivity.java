@@ -1,18 +1,11 @@
 package com.duy.radiocean;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.util.Log;
-
-import com.duy.radiocean.adapter.AlbumSongAdapter;
-
-import java.util.ArrayList;
 
 
 import com.duy.radiocean.databinding.ActivityMainBinding;
