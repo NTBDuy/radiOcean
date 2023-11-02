@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.AlbumFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:id="@+id/background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_background" />
+
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/backicon" />
+
+        <TextView
+            android:id="@+id/TxtNamePlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="65dp"
+            android:gravity="center"
+            android:lineSpacingExtra="50dp"
+            android:text="NAME PLAYLIST"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imgAlbum2"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:layout_below="@+id/TxtNamePlaylist"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test2" />
+
+        <ImageView
+            android:id="@+id/imgAlbum1"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/TxtNamePlaylist"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/test2" />
+
+        <RelativeLayout
+            android:id="@+id/layoutPopular"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginTop="383dp">
+
+            <TextView
+                android:id="@+id/txtTitlePopular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="Popular"
+                android:textSize="30dp"
+                android:textStyle="italic" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewListSong"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="80dp"
+                android:elevation="2dp"
+                android:background="@drawable/border_list_song"
+                android:padding="10dp"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

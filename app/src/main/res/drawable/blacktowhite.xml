@@ -1,0 +1,27 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- First Layer: Linear Gradient -->
+    <item android:gravity="fill">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="180"
+                android:centerColor="#696969"
+                android:startColor="#00000000"
+                android:endColor="#00000000"
+                android:centerX="0.9975" />
+        </shape>
+    </item>
+
+    <!-- Second Layer: Image -->
+    <item>
+        <bitmap
+            android:src="@drawable/test2"
+            android:gravity="fill"
+            android:tileMode="disabled" />
+    </item>
+
+    <!-- Third Layer: Solid Color Overlay (lightgray with 50% opacity) -->
+    <item>
+        <color android:color="#80C0C0C0" />
+    </item>
+</layer-list>
