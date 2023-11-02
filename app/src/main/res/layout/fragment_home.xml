@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/mainDisplay"
         android:layout_width="match_parent"
-        android:layout_height="310dp"
+        android:layout_height="370dp"
         >
         <TextView
             android:id="@+id/TextPopular"
