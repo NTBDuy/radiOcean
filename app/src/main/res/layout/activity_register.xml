@@ -41,40 +41,45 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
-            android:hint="   Email"
+            android:hint="Email"
             android:layout_below="@+id/Register_View"
             android:layout_width="300dp"
             android:minHeight="48dp"
+            android:paddingLeft="20dp"
             android:background="@drawable/beautiful_edittext"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name"
-            android:hint="   Name"
+            android:hint="Name"
             android:background="@drawable/beautiful_edittext"
             android:layout_below="@+id/email"
             android:layout_width="300dp"
+            android:paddingLeft="20dp"
             android:minHeight="48dp"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/gender"
-            android:hint="   Gender"
+            android:hint="Gender"
             android:background="@drawable/beautiful_edittext"
             android:layout_below="@+id/name"
             android:layout_width="300dp"
+            android:paddingLeft="20dp"
             android:minHeight="48dp"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
-            android:hint="   Password"
+            android:hint="Password"
             android:background="@drawable/beautiful_edittext"
             android:minHeight="48dp"
             android:layout_below="@+id/gender"
             android:layout_width="300dp"
+            android:paddingLeft="20dp"
+            android:inputType="textPassword"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>

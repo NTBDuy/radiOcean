@@ -44,8 +44,6 @@ public class LogIn extends AppCompatActivity {
         passwordEdt = findViewById(R.id.password);
         btnReg = findViewById(R.id.btnLogin);
         mAuth = FirebaseAuth.getInstance();
-//        emailEdt.setSelection(5);
-//        passwordEdt.setSelection(5);
 
         TextView register = findViewById(R.id.register_in_login);
         register.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +54,6 @@ public class LogIn extends AppCompatActivity {
                 finish();
             }
         });
-
         btnReg.setOnClickListener(new View.OnClickListener() {
 
             @Override

@@ -20,14 +20,22 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class Register extends AppCompatActivity {
     TextInputEditText emailEdt, passwordEdt, genderEdt, nameEdt;
     AppCompatButton btnReg;
     FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    ArrayList<Profile> listProfile = new ArrayList<>();
+    int idIdentity = 0;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -39,17 +47,49 @@ public class Register extends AppCompatActivity {
             finish();
         }
     }
+
+    private void loadSomething() {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference ref = db.getReference("Profiles");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    listProfile.clear();
+                    for (DataSnapshot profileSnapshot : snapshot.getChildren()) {
+                        Profile prof = profileSnapshot.getValue(Profile.class);
+                        listProfile.add(prof);
+                    }
+                    idIdentity = listProfile.size();
+
+
+                }
+//                System.out.println("do dai cua listProfile.size(): "+ listProfile.size());
+//                System.out.println("do dai cua idIdentity: "+ idIdentity);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void writeNewUser(){
-        Profile profile = new Profile(emailEdt.getText().toString(),
+        loadSomething();
+
+        int temp = idIdentity++;
+        String newId = String.valueOf(temp);
+
+        Profile profile = new Profile(newId, emailEdt.getText().toString(),
                 nameEdt.getText().toString(),
                 genderEdt.getText().toString());
-        String email = nameEdt.getText().toString().replace('.',' ');
-        System.out.println(profile.getEmail()+profile.getGender());
-        mDatabase.child("Profiles").child(email).setValue(profile);
-
+        mDatabase.child("Profiles").child(newId).setValue(profile);
     }
     public void sendData(){
+
         writeNewUser();
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
