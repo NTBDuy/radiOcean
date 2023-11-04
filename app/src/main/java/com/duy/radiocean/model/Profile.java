@@ -1,4 +1,4 @@
-package com.duy.radiocean;
+package com.duy.radiocean.model;
 
 public class Profile {
     String email, name, gender;

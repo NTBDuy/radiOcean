@@ -1,58 +1,101 @@
 package com.duy.radiocean.model;
 
-public class Song {
-    Integer id_song;
-    String name_song;
-    String singer;
-    String time_song;
+import java.io.Serializable;
 
-    int image;
+public class Song implements Serializable {
+    private int id;
+    private String title;
+    private String album;
+    private String artist;
+    private int length;
+    private String link;
+    private String imgAlbum;
+    private String imgSong;
+    private Boolean TopTrendy;
 
-    public Song(Integer id_song, String name_song, String singer, String time_song, int image) {
-        this.id_song = id_song;
-        this.name_song = name_song;
-        this.singer = singer;
-        this.time_song = time_song;
-        this.image = image;
+    public Song() {}
+
+    public Song(int id, String title, String album, String artist, int length, String link, String imgAlbum, String imgSong, Boolean TopTrendy) {
+        this.id = id;
+        this.title = title;
+        this.album = album;
+        this.artist = artist;
+        this.length = length;
+        this.link = link;
+        this.imgAlbum = imgAlbum;
+        this.imgSong = imgSong;
+        this.TopTrendy = TopTrendy;
     }
 
-    public Integer getId_song() {
-        return id_song;
+    public int getId() {
+        return id;
     }
 
-    public void setId_song(Integer id_song) {
-        this.id_song = id_song;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getName_song() {
-        return name_song;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName_song(String name_song) {
-        this.name_song = name_song;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getSinger() {
-        return singer;
+    public String getAlbum() {
+        return album;
     }
 
-    public void setSinger(String singer) {
-        this.singer = singer;
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
-    public String getTime_song() {
-        return time_song;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setTime_song(String time_song) {
-        this.time_song = time_song;
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
-    public int getImage() {
-        return image;
+    public int getLength() {
+        return length;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getImgAlbum() {
+        return imgAlbum;
+    }
+
+    public void setImgAlbum(String imgAlbum) {
+        this.imgAlbum = imgAlbum;
+    }
+
+    public String getImgSong() {
+        return imgSong;
+    }
+
+    public void setImgSong(String imgSong) {
+        this.imgSong = imgSong;
+    }
+
+    public Boolean getTopTrendy() {
+        return TopTrendy;
+    }
+
+    public void setTopTrendy(Boolean topTrendy) {
+        this.TopTrendy = topTrendy;
     }
 }

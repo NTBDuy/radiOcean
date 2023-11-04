@@ -1,23 +1,30 @@
 package com.duy.radiocean.fragment;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.os.IBinder;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.duy.radiocean.Profile;
 import com.duy.radiocean.R;
 import com.duy.radiocean.authentication.LogIn;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
+import com.duy.radiocean.model.Profile;
+import com.duy.radiocean.model.Song;
+import com.duy.radiocean.service.MusicService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,10 +33,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.FileInputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements MusicService.OnSongChangedListener{
 
     FirebaseAuth auth;
     FirebaseUser user;
@@ -45,13 +50,16 @@ public class ProfileFragment extends Fragment {
         ProfileFragment fragment = new ProfileFragment();
         return fragment;
     }
+    Button btnPlay, btnPause;
+    private Intent serviceIntent;
+    private boolean mBound = false;
+    private MusicService mService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +68,6 @@ public class ProfileFragment extends Fragment {
         btnLogout = view.findViewById(R.id.btnLogout);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +88,81 @@ public class ProfileFragment extends Fragment {
         }
         return view;
     }
-    public int flag = 0;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initWidgets();
+        setButtonClickListeners();
+    }
+
+    private void initWidgets() {
+        btnPlay = requireActivity().findViewById(R.id.btnPlay);
+        btnPause = requireActivity().findViewById(R.id.btnPause);
+    }
+
+    private void setButtonClickListeners() {
+        btnPlay.setOnClickListener(v -> {
+            Log.d("TEST PLAYING SONG", "You are click on " + getClass());
+            if (mBound) {
+                mService.continueSong();
+                updatePlayPauseButtonsVisibility(true);
+            }
+        });
+
+        btnPause.setOnClickListener(v -> {
+            Log.d("TEST PLAYING SONG", "You are click on " + getClass());
+            if (mBound) {
+                mService.pauseMusic();
+                updatePlayPauseButtonsVisibility(false);
+            }
+        });
+    }
+
+    private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
+        btnPlay.setVisibility(isPlaying ? View.GONE : View.VISIBLE);
+        btnPause.setVisibility(isPlaying ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bindMusicService();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        unbindMusicService();
+    }
+
+    private void bindMusicService() {
+        serviceIntent = new Intent(getActivity(), MusicService.class);
+        requireActivity().bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    private void unbindMusicService() {
+        if (mBound) {
+            requireActivity().unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+    private final ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            MusicService.LocalBinder binder = (MusicService.LocalBinder) service;
+            mService = binder.getService();
+            mService.setOnSongChangedListener(ProfileFragment.this);
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
     public void getdata(){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference("Profiles");
@@ -95,6 +176,7 @@ public class ProfileFragment extends Fragment {
                     for (DataSnapshot profileSnapshot : snapshot.getChildren()) {
                         try{
                             Profile prof = profileSnapshot.getValue(Profile.class);
+                            listProfile.add(prof);
                         }catch (Exception e){
                             System.out.println("Throw: "+e.getMessage());
                         }
@@ -114,6 +196,11 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onSongChanged(Song newSong) {
+
     }
 }
 

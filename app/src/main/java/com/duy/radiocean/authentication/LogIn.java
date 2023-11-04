@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.duy.radiocean.MainActivity;
+import com.duy.radiocean.activity.MainActivity;
 import com.duy.radiocean.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

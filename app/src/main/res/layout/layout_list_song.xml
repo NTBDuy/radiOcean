@@ -5,20 +5,12 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
-    <TextView
-        android:id="@+id/txtIdSong"
-        android:layout_width="48dp"
-        android:layout_height="60dp"
-        android:text="ID"
-        android:textSize="20sp"
-        android:textAlignment="center"
-        android:gravity="center"/>
 
     <ImageView
         android:id="@+id/imgSong"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_toEndOf="@+id/txtIdSong"/>
+        android:layout_marginStart="20dp"/>
 
     <TextView
         android:id="@+id/txtNameSong"

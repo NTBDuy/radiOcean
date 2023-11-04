@@ -11,21 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.duy.radiocean.R;
 import com.duy.radiocean.RecyclerViewInterface;
-import com.duy.radiocean.model.Song;
+import com.duy.radiocean.model.Album;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ListSongAdapter extends RecyclerView.Adapter<ListSongAdapter.ViewHolder> {
+public class ListAlbumAdapter extends RecyclerView.Adapter<ListAlbumAdapter.ViewHolder> {
     private final RecyclerViewInterface recyclerViewInterface;
 
     Context context;
-    ArrayList<Song> items;
+    ArrayList<Album> items;
 
-    public ListSongAdapter(Context context, ArrayList<Song> items, RecyclerViewInterface recyclerViewInterface) {
+    public ListAlbumAdapter(Context context, ArrayList<Album> items, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.items = items;
         this.recyclerViewInterface = recyclerViewInterface;
@@ -34,15 +33,13 @@ public class ListSongAdapter extends RecyclerView.Adapter<ListSongAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_song, parent, false), recyclerViewInterface);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_album, parent, false), recyclerViewInterface);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.title.setText(items.get(position).getTitle());
-        holder.artist.setText(items.get(position).getArtist());
-        holder.time.setText(createTimeLabel((items.get(position).getLength())*1000));
-        Picasso.get().load(items.get(position).getImgSong()).into(holder.img);
+        holder.name.setText(String.valueOf(items.get(position).getAlbum()));
+        Picasso.get().load(items.get(position).getImgAlbum()).into(holder.img);
     }
 
     @Override
@@ -51,17 +48,13 @@ public class ListSongAdapter extends RecyclerView.Adapter<ListSongAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-
-        TextView id, title, artist, time;
         ImageView img;
-
+        TextView name;
         public ViewHolder(View inflate, RecyclerViewInterface recyclerViewInterface) {
             super(inflate);
 
-            title = inflate.findViewById(R.id.txtNameSong);
-            artist = inflate.findViewById(R.id.txtSinger);
-            time = inflate.findViewById(R.id.txtTime);
-            img = inflate.findViewById(R.id.imgSong);
+            name = inflate.findViewById(R.id.txtNameAlbum);
+            img = inflate.findViewById(R.id.imgAlbum);
 
             inflate.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,21 +63,12 @@ public class ListSongAdapter extends RecyclerView.Adapter<ListSongAdapter.ViewHo
                         int pos = getAdapterPosition();
 
                         if (pos != RecyclerView.NO_POSITION) {
-                            recyclerViewInterface.onItemClick(pos);
+                            recyclerViewInterface.onAlbumClick(pos);
                         }
                     }
+
                 }
             });
         }
-    }
-
-    public String createTimeLabel(int duration) {
-        String timerLabel = "";
-        int min = duration / 1000 / 60;
-        int sec = duration / 1000 % 60;
-        timerLabel += min + ":";
-        if (sec < 10) timerLabel += "0";
-        timerLabel += sec;
-        return timerLabel;
     }
 }

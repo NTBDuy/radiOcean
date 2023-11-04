@@ -18,7 +18,7 @@
 
 
         <ImageView
-            android:id="@+id/backButton"
+            android:id="@+id/btnBackFromAlbum"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="30dp"
@@ -69,12 +69,31 @@
                 android:layout_marginStart="25dp"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
-                android:text="Popular"
+                android:text="List song"
                 android:textSize="30dp"
                 android:textStyle="italic" />
 
+            <Button
+                android:id="@+id/btnPlayInAlbum"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/ic_launcher_play_foreground" />
+
+            <Button
+                android:id="@+id/btnPauseInAlbum"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone"
+                android:background="@drawable/ic_launcher_pause_foreground" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewListSong"
+                android:id="@+id/rvListSongFromAlbum"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
