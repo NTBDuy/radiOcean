@@ -57,7 +57,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
     private TextView txtNameAlbum, tvTitleSongPlaying, tvArtisSongPlaying;
     private RecyclerView rvSong;
     private ListSongAdapter songAdapter;
-    private final ArrayList<Song> lstSong = new ArrayList<>();
+    private final ArrayList<Song> lstSongInAlbum = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,7 +123,12 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
         });
 
         btnPlayInAlbum.setOnClickListener(v -> {
-
+            requireActivity().startService(createPlayIntent(0));
+            updatePlayPauseButtonsVisibility(true);
+        });
+        btnPauseInAlbum.setOnClickListener(v -> {
+            requireActivity().startService(serviceIntent.setAction("PAUSE"));
+            updatePlayPauseButtonsVisibility(false);
         });
     }
 
@@ -143,11 +148,6 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
     }
 
     @Override
-    public void onItemClick(int position) {
-
-    }
-
-    @Override
     public void onAlbumClick(int position) {
 
     }
@@ -158,12 +158,12 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                lstSong.clear(); // Xóa dữ liệu cũ (nếu có) trong ArrayList
+                lstSongInAlbum.clear(); // Xóa dữ liệu cũ (nếu có) trong ArrayList
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Song song = snapshot.getValue(Song.class);
-                    if (Objects.equals(song.getAlbum(), album.getAlbum())) lstSong.add(song);
+                    if (Objects.equals(song.getAlbum(), album.getAlbum())) lstSongInAlbum.add(song);
                 }
-                songAdapter = new ListSongAdapter(getActivity(), lstSong, AlbumFragment.this);
+                songAdapter = new ListSongAdapter(getActivity(), lstSongInAlbum, AlbumFragment.this);
                 rvSong.setAdapter(songAdapter);
             }
 
@@ -183,10 +183,11 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
         }
     }
 
-
     private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
         btnPlay.setVisibility(isPlaying ? View.GONE : View.VISIBLE);
         btnPause.setVisibility(isPlaying ? View.VISIBLE : View.GONE);
+        btnPlayInAlbum.setVisibility(isPlaying ? View.GONE : View.VISIBLE);
+        btnPauseInAlbum.setVisibility(isPlaying ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -230,11 +231,23 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
 
     @Override
     public void onSongChanged(Song newSong) {
-        // Đây bạn có thể cập nhật giao diện người dùng với thông tin bài hát mới.
+        getPlayingSongDetail();
     }
 
-    private Song getSongToPlay() {
-        // Điền vào logic để lấy ra bài hát bạn muốn phát ở đây.
-        return null;
+    private Intent createPlayIntent(int position) {
+        Intent playIntent = new Intent(getActivity(), MusicService.class);
+        playIntent.setAction("PLAY");
+        playIntent.putExtra("POSITION", position);
+        playIntent.putExtra("SONG_INFO", lstSongInAlbum.get(position));
+        return playIntent;
+    }
+
+
+    @Override
+    public void onItemClick(int position) {
+        Log.d("CLICK EVENT", "You click in " + position);
+        requireActivity().startService(serviceIntent.setAction("STOP"));
+        requireActivity().startService(createPlayIntent(position));
+        updatePlayPauseButtonsVisibility(true);
     }
 }
