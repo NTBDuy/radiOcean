@@ -37,7 +37,7 @@
     <RelativeLayout
         android:id="@+id/layoutPopular"
         android:layout_width="match_parent"
-        android:layout_height="405dp"
+        android:layout_height="505dp"
         android:layout_marginTop="283dp"
         android:layout_above="@id/layoutPlaying">
 
@@ -49,7 +49,7 @@
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:text="Popular"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textStyle="italic" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -60,62 +60,8 @@
             android:layout_marginTop="80dp"
             android:elevation="2dp"
             android:background="@drawable/border_list_song"
-            android:padding="10dp"
-            />
+            android:padding="10dp" />
 
     </RelativeLayout>
 
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/layoutPlaying"-->
-<!--        android:layout_width="401dp"-->
-<!--        android:layout_height="80dp"-->
-<!--        android:layout_marginTop="679dp"-->
-<!--        android:padding="10dp"-->
-<!--        android:layout_marginStart="5dp"-->
-<!--        android:background="@drawable/border_playing_song">-->
-
-<!--        <ImageView-->
-<!--            android:id="@+id/imgSongPlaying"-->
-<!--            android:layout_width="60dp"-->
-<!--            android:layout_height="60dp"-->
-<!--            android:padding="10dp"/>-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/txtNameSongPlaying"-->
-<!--            android:layout_width="200dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:text="No song playing now"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textSize="20sp"-->
-<!--            android:singleLine="true"-->
-<!--            android:layout_toEndOf="@id/imgSongPlaying"-->
-<!--            android:padding="2dp"-->
-<!--            android:layout_marginStart="10dp"/>-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/txtSingerPlaying"-->
-<!--            android:layout_width="200dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:textSize="18sp"-->
-<!--            android:layout_toEndOf="@id/imgSongPlaying"-->
-<!--            android:layout_below="@id/txtNameSongPlaying"-->
-<!--            android:padding="2dp"-->
-<!--            android:layout_marginStart="10dp"/>-->
-
-<!--       <Button-->
-<!--           android:id="@+id/btnPlay"-->
-<!--           android:layout_width="60dp"-->
-<!--           android:layout_height="wrap_content"-->
-<!--           android:layout_alignParentEnd="true"-->
-<!--           android:background="@drawable/ic_launcher_play_foreground" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/btnPause"-->
-<!--            android:layout_width="60dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:visibility="gone"-->
-<!--            android:background="@drawable/ic_launcher_pause_foreground" />-->
-
-<!--    </RelativeLayout>-->
 </FrameLayout>

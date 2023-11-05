@@ -1,7 +1,6 @@
 package com.duy.radiocean.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 
 public class ListAlbumAdapter extends RecyclerView.Adapter<ListAlbumAdapter.ViewHolder> {
     private final RecyclerViewInterface recyclerViewInterface;
-
     Context context;
     ArrayList<Album> items;
 
@@ -29,24 +27,20 @@ public class ListAlbumAdapter extends RecyclerView.Adapter<ListAlbumAdapter.View
         this.items = items;
         this.recyclerViewInterface = recyclerViewInterface;
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_album, parent, false), recyclerViewInterface);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.name.setText(String.valueOf(items.get(position).getAlbum()));
         Picasso.get().load(items.get(position).getImgAlbum()).into(holder.img);
     }
-
     @Override
     public int getItemCount() {
         return items.size();
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView img;
         TextView name;

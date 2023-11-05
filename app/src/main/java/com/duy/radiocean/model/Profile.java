@@ -14,9 +14,7 @@ public class Profile {
         this.name = name;
         this.gender = gender;
     }
-    public Profile(){
-
-    }
+    public Profile(){}
 
     public void setEmail(String email) {
         this.email = email;

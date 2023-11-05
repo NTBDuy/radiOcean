@@ -12,7 +12,7 @@
         android:layout_height="491dp">
 
         <Button
-            android:id="@+id/btnBack"
+            android:id="@+id/btnBackFromMusicActi"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="20dp"
@@ -20,7 +20,7 @@
             android:background="@drawable/ic_launcher_back_foreground"/>
 
         <ImageView
-            android:id="@+id/ivSong"
+            android:id="@+id/imgSongPlayingFromMusicActi"
             android:layout_width="350dp"
             android:layout_height="350dp"
             android:layout_centerInParent="true"
@@ -29,9 +29,9 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rlBottom"
+        android:id="@+id/rlMid"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="200dp"
         android:layout_below="@id/rlTop">
 
         <TextView
@@ -61,47 +61,87 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@id/tvSongArtist"
             android:layout_marginTop="20dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/rlMid">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <!-- Previous Button -->
+            <Button
+                android:id="@+id/btnPrevious"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="0dp"
+                android:layout_toStartOf="@id/btnPlay"
+                android:layout_toLeftOf="@id/btnPause"
+                android:background="@drawable/ic_launcher_prev_foreground" />
+            <!-- Pause Button -->
+            <Button
+                android:id="@+id/btnPauseFromMusicActi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_launcher_pause_foreground"
+                android:layout_below="@id/btnPlay"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="36dp"
+                android:visibility="gone" />
+
+            <!-- Play Button -->
+
+
+            <!-- Next Button -->
+            <Button
+                android:id="@+id/btnPlayFromMusicActi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/ic_launcher_play_foreground" />
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_launcher_next_foreground"
+                android:layout_toEndOf="@id/btnPlay"
+                android:layout_toRightOf="@id/btnPause"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="36dp" />
+        </LinearLayout>
+
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"/>
 
         <TextView
             android:id="@+id/tvTimeCurrent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00"
-            android:layout_marginTop="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingStart="10dp"
-            android:layout_below="@id/tvSongAlbum"/>
-
-        <SeekBar
-            android:id="@+id/skbSongTime"
-            android:layout_width="320dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/tvSongAlbum"/>
+            android:layout_toStartOf="@id/seekBar"
+            android:layout_marginTop="20dp"/>
 
         <TextView
-            android:id="@+id/tvTotalTime"
+            android:id="@+id/tvTimeTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00"
-            android:layout_marginTop="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingEnd="10dp"
-            android:layout_below="@id/tvSongAlbum"
-            android:layout_toRightOf="@id/skbSongTime"/>
-
-
-        <Button
-            android:id="@+id/btnPlay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/skbSongTime"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/ic_launcher_play_foreground" />
+            android:layout_toEndOf="@id/seekBar"
+            android:layout_marginTop="20dp"/>
 
     </RelativeLayout>
 

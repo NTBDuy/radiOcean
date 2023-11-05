@@ -1,24 +1,16 @@
 package com.duy.radiocean.fragment;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.Fragment;
-
-import android.os.IBinder;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.duy.radiocean.R;
 import com.duy.radiocean.authentication.LogIn;
@@ -35,32 +27,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 public class ProfileFragment extends Fragment implements MusicService.OnSongChangedListener{
-
     FirebaseAuth auth;
     FirebaseUser user;
     Button btnLogout;
+    private TextView name, email;
     ArrayList<Profile> listProfile = new ArrayList<>();
 
-    public ProfileFragment() {
-    }
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-    private TextView name, email;
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        return fragment;
-    }
-    Button btnPlay, btnPause;
-    private Intent serviceIntent;
-    private boolean mBound = false;
-    private MusicService mService;
-
-    @Override
+    public ProfileFragment() {}
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,81 +64,10 @@ public class ProfileFragment extends Fragment implements MusicService.OnSongChan
         }
         return view;
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initWidgets();
-        setButtonClickListeners();
     }
-
-    private void initWidgets() {
-        btnPlay = requireActivity().findViewById(R.id.btnPlay);
-        btnPause = requireActivity().findViewById(R.id.btnPause);
-    }
-
-    private void setButtonClickListeners() {
-        btnPlay.setOnClickListener(v -> {
-            Log.d("TEST PLAYING SONG", "You are click on " + getClass());
-            if (mBound) {
-                mService.continueSong();
-                updatePlayPauseButtonsVisibility(true);
-            }
-        });
-
-        btnPause.setOnClickListener(v -> {
-            Log.d("TEST PLAYING SONG", "You are click on " + getClass());
-            if (mBound) {
-                mService.pauseMusic();
-                updatePlayPauseButtonsVisibility(false);
-            }
-        });
-    }
-
-    private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
-        btnPlay.setVisibility(isPlaying ? View.GONE : View.VISIBLE);
-        btnPause.setVisibility(isPlaying ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        bindMusicService();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        unbindMusicService();
-    }
-
-    private void bindMusicService() {
-        serviceIntent = new Intent(getActivity(), MusicService.class);
-        requireActivity().bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    private void unbindMusicService() {
-        if (mBound) {
-            requireActivity().unbindService(mConnection);
-            mBound = false;
-        }
-    }
-
-    private final ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            MusicService.LocalBinder binder = (MusicService.LocalBinder) service;
-            mService = binder.getService();
-            mService.setOnSongChangedListener(ProfileFragment.this);
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
-
     public void getdata(){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference("Profiles");
@@ -197,11 +102,8 @@ public class ProfileFragment extends Fragment implements MusicService.OnSongChan
             }
         });
     }
-
     @Override
-    public void onSongChanged(Song newSong) {
-
-    }
+    public void onSongChanged(Song newSong) {}
 }
 
 
