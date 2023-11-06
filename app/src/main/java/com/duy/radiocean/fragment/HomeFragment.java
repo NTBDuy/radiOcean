@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
                 rvSong.setAdapter(songAdapter);
                 albumAdapter = new ListAlbumAdapter(getActivity(), lstAlbum, HomeFragment.this);
                 rvAlbum.setAdapter(albumAdapter);
-                putDataToService(lstSong);
+//                putDataToService(lstSong);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

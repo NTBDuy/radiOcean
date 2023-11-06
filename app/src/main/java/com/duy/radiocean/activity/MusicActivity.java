@@ -10,6 +10,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,6 +42,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             if (intent.getAction().equals("UPDATE_SEEK_BAR")) {
                 int currentPosition = intent.getIntExtra("CURRENT_POSITION", 0);
                 updateSeekBarPosition(currentPosition);
+                updatePlayPauseButtonsVisibility(musicService.isPlaying());
             }
         }
     };
@@ -169,11 +171,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             tvAlbum.setText(songPlaying.getAlbum());
             seekBar.setMax(songPlaying.getLength());
         }
-        if (musicService.isPlaying()) {
-            updatePlayPauseButtonsVisibility(true);
-        } else {
-            updatePlayPauseButtonsVisibility(false);
-        }
+        updatePlayPauseButtonsVisibility(musicService.isPlaying());
     }
     private void updateSeekBarPosition(int currentPosition) {
         seekBar.setProgress(currentPosition/1000);
@@ -202,6 +200,8 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
     @Override
     public void onSongChanged(Song newSong) {
         songPlaying = newSong;
+        Log.e("NEXT SONG TEST", "onSongChanged is running!");
+        updatePlayPauseButtonsVisibility(true);
         setValueForWidgets();
     }
 }

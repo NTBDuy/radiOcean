@@ -80,6 +80,11 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
             replaceFragment(new HomeFragment());
         });
         btnPlayInAlbum.setOnClickListener(v -> {
+            // Create an Intent for the "PAUSE" action
+            Intent resetIntent = new Intent(getActivity(), MusicService.class);
+            resetIntent.setAction("RESET");
+            // Send the pauseIntent to the MusicService
+            getActivity().startService(resetIntent);
             putDataToService(lstSongInAlbum);
             requireActivity().startService(createPlayIntent(0));
             updatePlayPauseButtonsVisibility(true);
@@ -125,6 +130,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
     public void onAlbumClick(int position) {}
     @Override
     public void onItemClick(int position) {
+        putDataToService(lstSongInAlbum);
         Intent resetIntent = new Intent(getActivity(), MusicService.class);
         resetIntent.setAction("RESET");
         getActivity().startService(resetIntent);

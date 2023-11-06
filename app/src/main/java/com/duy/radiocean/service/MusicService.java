@@ -47,7 +47,8 @@ public class MusicService extends Service {
         super.onCreate();
         mediaPlayer = new MediaPlayer();
         songPlaying = new Song();
-        mediaPlayer.setOnCompletionListener(mp -> playNextTrack());
+
+        mediaPlayer.setOnCompletionListener(mediaPlayer -> playNextTrack());
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
