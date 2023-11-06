@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +24,8 @@ import com.duy.radiocean.R;
 import com.duy.radiocean.model.Song;
 import com.duy.radiocean.service.MusicService;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 public class MusicActivity extends AppCompatActivity implements MusicService.OnSongChangedListener {
     // ...
@@ -165,11 +168,39 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
     }
     private void setValueForWidgets() {
         if (songPlaying != null) {
-            Picasso.get().load(songPlaying.getImgSong()).into(imgSong);
-            tvTitle.setText(songPlaying.getTitle());
-            tvArtist.setText(songPlaying.getArtist());
-            tvAlbum.setText(songPlaying.getAlbum());
-            seekBar.setMax(songPlaying.getLength());
+            if (Objects.equals(songPlaying.getTitle(), "") || songPlaying.getTitle()==null) {
+                btnPlay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(),"Nothing to play!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btnNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(),"Nothing to next!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btnPrev.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(),"Nothing to prev!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                btnPause.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(),"Nothing to pause!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Picasso.get().load(songPlaying.getImgSong()).into(imgSong);
+                tvTitle.setText(songPlaying.getTitle());
+                tvArtist.setText(songPlaying.getArtist());
+                tvAlbum.setText(songPlaying.getAlbum());
+                seekBar.setMax(songPlaying.getLength());
+            }
         }
         updatePlayPauseButtonsVisibility(musicService.isPlaying());
     }
