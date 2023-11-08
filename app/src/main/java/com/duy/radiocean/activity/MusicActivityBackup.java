@@ -13,7 +13,6 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -28,12 +27,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
-public class MusicActivity extends AppCompatActivity implements MusicService.OnSongChangedListener {
+public class MusicActivityBackup extends AppCompatActivity implements MusicService.OnSongChangedListener {
     // ...
     private MusicService musicService;
     private boolean isBound = false;
     private ServiceConnection serviceConnection;
-    private ImageButton btnBackFromMusicAct, btnPlay, btnSuff, btnLoop, btnNext, btnPrev;
+    private Button btnBackFromMusicAct, btnPlay, btnPause, btnNext, btnPrev;
     private ImageView imgSong;
     private TextView tvTitle, tvArtist, tvAlbum, tvCurTime, tvTotalTime;
     private SeekBar seekBar;
@@ -54,7 +53,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_music_new);
+        setContentView(R.layout.activity_music);
         initWidgets();
         setClickFunc();
         loadPlayingSongFromService();
@@ -62,20 +61,18 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         registerReceiver(seekBarReceiver, new IntentFilter("UPDATE_SEEK_BAR"));
     }
     private void initWidgets() {
-        btnBackFromMusicAct = findViewById(R.id.btnBackFromMusicNew);
-        btnPlay = findViewById(R.id.btnPlayFromMusicNew);
-//        btnPause = findViewById(R.id.btnPauseFromMusicActi);
-        btnNext = findViewById(R.id.btnNextFromMusicNew);
-        btnPrev = findViewById(R.id.btnPreviousFromMusicNew);
-        btnSuff = findViewById(R.id.btnShuffle);
-        btnLoop = findViewById(R.id.btnLoop);
-        imgSong = findViewById(R.id.imgSongPlayingFromMusicNew);
-        tvTitle = findViewById(R.id.tvSongTitleNew);
-        tvArtist = findViewById(R.id.tvSongArtistNew);
-        tvAlbum = findViewById(R.id.tvSongAlbumNew);
-        tvCurTime = findViewById(R.id.tvTimeCurrentNew);
-        tvTotalTime = findViewById(R.id.tvTimeTotalNew);
-        seekBar = findViewById(R.id.seekBarNew);
+        btnBackFromMusicAct = findViewById(R.id.btnBackFromMusicActi);
+        btnPlay = findViewById(R.id.btnPlayFromMusicActi);
+        btnPause = findViewById(R.id.btnPauseFromMusicActi);
+        btnNext = findViewById(R.id.btnNext);
+        btnPrev = findViewById(R.id.btnPrevious);
+        imgSong = findViewById(R.id.imgSongPlayingFromMusicActi);
+        tvTitle = findViewById(R.id.tvSongTitle);
+        tvArtist = findViewById(R.id.tvSongArtist);
+        tvAlbum = findViewById(R.id.tvSongAlbum);
+        tvCurTime = findViewById(R.id.tvTimeCurrent);
+        tvTotalTime = findViewById(R.id.tvTimeTotal);
+        seekBar = findViewById(R.id.seekBar);
     }
     private void setClickFunc() {
         btnBackFromMusicAct.setOnClickListener(new View.OnClickListener() {
@@ -100,21 +97,11 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             }
         });
 
-        btnSuff.setOnClickListener(new View.OnClickListener() {
+        btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                musicService.toggleShuffleMode();
-                // Update the UI to reflect the shuffle mode status
-//                updateShuffleButtonUI();
-            }
-        });
-
-        btnLoop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                musicService.toggleLoopMode();
-                // Update the UI to reflect the loop mode status
-//                updateLoopButtonUI();
+                musicService.pauseMusic();
+                updatePlayPauseButtonsVisibility(false);
             }
         });
 
@@ -153,13 +140,8 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         });
     }
     private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
-        if (isPlaying) {
-            btnPlay.setBackgroundResource(R.drawable.pause);
-        } else {
-            btnPlay.setBackgroundResource(R.drawable.play);
-        }
-//        btnPlay.setVisibility(isPlaying ? View.GONE : View.VISIBLE);
-//        btnPause.setVisibility(isPlaying ? View.VISIBLE : View.GONE);
+        btnPlay.setVisibility(isPlaying ? View.GONE : View.VISIBLE);
+        btnPause.setVisibility(isPlaying ? View.VISIBLE : View.GONE);
     }
     private void loadPlayingSongFromService() {
         serviceConnection = new ServiceConnection() {
@@ -170,7 +152,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
                 isBound = true;
 
                 // Set the MusicActivity as the listener for song changes
-                musicService.setOnSongChangedListener(MusicActivity.this);
+                musicService.setOnSongChangedListener(MusicActivityBackup.this);
 
                 Song currentSong = musicService.getCurrentPlayingSong();
                 if (currentSong != null) {
@@ -206,12 +188,12 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
                     }
                 });
 
-//                btnPause.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(v.getContext(),"Nothing to pause!", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+                btnPause.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(),"Nothing to pause!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             } else {
                 Picasso.get().load(songPlaying.getImgSong()).into(imgSong);
                 tvTitle.setText(songPlaying.getTitle());

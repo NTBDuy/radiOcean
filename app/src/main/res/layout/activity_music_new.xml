@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background"
+        tools:context=".MainActivity"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="591dp">
+
+            <TextView
+                android:id="@+id/TxtPlayingFromPlaylist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="89.5dp"
+                android:text="Playing from playsist"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:id="@+id/tvSongAlbumNew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/TxtPlayingFromPlaylist"
+                android:text="Playlist name"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <!--            <androidx.recyclerview.widget.RecyclerView-->
+            <!--                android:id="@+id/Rcv_songs"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_below="@id/TxtPlaylistName"-->
+            <!--                android:layout_marginTop="30dp"/>-->
+
+            <ImageView
+                android:id="@+id/imgSongPlayingFromMusicNew"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_below="@+id/tvSongAlbumNew"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:alpha="0.4"
+                android:background="@drawable/anh"
+                android:importantForAccessibility="no" />
+
+            <ImageButton
+                android:id="@+id/btnBackFromMusicNew"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="85dp"
+                android:background="@null"
+                android:rotation="-90"
+                android:src="@drawable/back"
+                android:importantForAccessibility="no" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="591dp"
+            tools:ignore="MissingConstraints">
+
+
+            <TextView
+                android:id="@+id/tvSongTitleNew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="37dp"
+                android:text="Song name"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/tvSongArtistNew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvSongTitleNew"
+                android:layout_marginStart="37dp"
+                android:text="Singer"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+
+            <RelativeLayout
+                android:id="@+id/musicController"
+                android:layout_width="370dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvSongArtistNew"
+                android:layout_marginStart="20.5dp"
+                android:layout_marginTop="50dp">
+
+                <TextView
+                    android:id="@+id/tvTimeCurrentNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="10sp"
+                    android:textColor="@color/black"
+                    android:layout_alignBottom="@id/seekBarNew"
+                    />
+
+                <TextView
+                    android:id="@+id/tvTimeTotalNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:layout_marginLeft="305dp"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="10sp"
+                    android:textColor="@color/black"
+                    android:layout_alignBottom="@id/seekBarNew"
+                    />
+
+                <SeekBar
+                    android:id="@+id/seekBarNew"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="#FFF"/>
+
+
+                <ImageButton
+                    android:id="@+id/btnPlayFromMusicNew"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/seekBarNew"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/play"
+                    android:src="@null"
+                    android:importantForAccessibility="no"
+                    android:onClick="Play"/>
+
+                <ImageButton
+                    android:id="@+id/btnNextFromMusicNew"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignTop="@id/btnPlayFromMusicNew"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@id/btnPlayFromMusicNew"
+                    android:background="@null"
+                    android:src="@drawable/forward"
+                    android:importantForAccessibility="no"
+                    android:onClick="PlayNext"/>
+
+                <ImageButton
+                    android:id="@+id/btnPreviousFromMusicNew"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignTop="@id/btnPlayFromMusicNew"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toStartOf="@+id/btnPlayFromMusicNew"
+                    android:background="@null"
+                    android:rotation="180"
+                    android:src="@drawable/backward"
+                    android:importantForAccessibility="no"
+                    android:onClick="PlayPrev"/>
+
+                <ImageButton
+                    android:id="@+id/btnLoop"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignTop="@id/btnNextFromMusicNew"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@id/btnNextFromMusicNew"
+                    android:background="@null"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/loop"
+                    android:onClick="Loop"/>
+
+                <ImageButton
+                    android:id="@+id/btnShuffle"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignTop="@id/btnPreviousFromMusicNew"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toStartOf="@id/btnPreviousFromMusicNew"
+                    android:background="@null"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/shuffle"
+                    android:onClick="Shuffle"/>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

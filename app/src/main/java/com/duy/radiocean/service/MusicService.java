@@ -12,6 +12,7 @@ import com.duy.radiocean.model.Song;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MusicService extends Service {
     private final IBinder mBinder = new LocalBinder();
@@ -20,28 +21,41 @@ public class MusicService extends Service {
     private boolean isPlaying = false;
     private int currentSong = 0, totalSong = 0, playbackPosition = 0;
     private ArrayList<Song> songList;
+    private ArrayList<Song> shuffledSongList;
+    private boolean isShuffleMode = false;
+    private int loopMode = LOOP_NONE; // Added loop mode
     private final String TAG = "SERVICE HERE";
     private final Handler handler = new Handler();
+
+    public static final int LOOP_NONE = 0;
+    public static final int LOOP_ONE = 1;
+    public static final int LOOP_ALL = 2;
 
     public interface OnSongChangedListener {
         void onSongChanged(Song newSong);
     }
+
     private OnSongChangedListener songChangedListener;
+
     public void setOnSongChangedListener(OnSongChangedListener listener) {
         this.songChangedListener = listener;
     }
+
     public class LocalBinder extends Binder {
         public MusicService getService() {
             return MusicService.this;
         }
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
+
     public Song getCurrentPlayingSong() {
         return songPlaying;
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -50,6 +64,7 @@ public class MusicService extends Service {
 
         mediaPlayer.setOnCompletionListener(mediaPlayer -> playNextTrack());
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = intent.getAction();
@@ -84,13 +99,21 @@ public class MusicService extends Service {
                 case "PREVIOUS":
                     playPreviousTrack();
                     break;
+                case "TOGGLE_SHUFFLE":
+                    toggleShuffleMode();
+                    break;
+                case "TOGGLE_LOOP":
+                    toggleLoopMode();
+                    break;
             }
         }
         return START_STICKY;
     }
+
     public boolean isPlaying() {
         return mediaPlayer != null && mediaPlayer.isPlaying();
     }
+
     public void playMusic(Song song) {
         Log.d(TAG, "PLAY");
         if (song != null) {
@@ -107,13 +130,15 @@ public class MusicService extends Service {
             }
         }
     }
+
     public void resetMusic() {
         Log.d(TAG, "RESET");
         mediaPlayer.reset();
     }
+
     public void continueMusic() {
         Log.d(TAG, "CONTINUE");
-        if (playbackPosition>=1) {
+        if (playbackPosition >= 1) {
             Log.d(TAG, "Continue this song!");
             mediaPlayer.seekTo(playbackPosition);
             mediaPlayer.start();
@@ -121,11 +146,8 @@ public class MusicService extends Service {
             Log.d(TAG, "Nothing to continue");
             mediaPlayer.reset();
         }
-//        if (!mediaPlayer.isPlaying()) {
-//            mediaPlayer.seekTo(playbackPosition);
-//            mediaPlayer.start();
-//        }
     }
+
     public void pauseMusic() {
         Log.d(TAG, "PAUSE");
         if (mediaPlayer.isPlaying()) {
@@ -134,24 +156,55 @@ public class MusicService extends Service {
         }
         isPlaying = false;
     }
+
     public void playNextTrack() {
         Log.d(TAG, "NEXT TRACK");
-        if (currentSong < totalSong - 1) {
-            currentSong++;
+        if (isShuffleMode) {
+            if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
+                currentSong = (currentSong + 1) % shuffledSongList.size();
+                playMusic(shuffledSongList.get(currentSong));
+            }
         } else {
-            currentSong = 0;
+            if (currentSong < totalSong - 1) {
+                currentSong++;
+            } else {
+                if (loopMode == LOOP_ONE) {
+                    currentSong = (currentSong) % totalSong;
+                } else if (loopMode == LOOP_ALL) {
+                    currentSong = 0;
+                } else {
+                    stopMusic();
+                    return;
+                }
+            }
+            playMusic(songList.get(currentSong));
         }
-        playMusic(songList.get(currentSong));
     }
+
     public void playPreviousTrack() {
         Log.d(TAG, "PREV TRACK");
-        if (currentSong > 0) {
-            currentSong--;
+        if (isShuffleMode) {
+            if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
+                currentSong = (currentSong - 1 + shuffledSongList.size()) % shuffledSongList.size();
+                playMusic(shuffledSongList.get(currentSong));
+            }
         } else {
-            currentSong = totalSong - 1;
+            if (currentSong > 0) {
+                currentSong--;
+            } else {
+                if (loopMode == LOOP_ONE) {
+                    currentSong = (currentSong + totalSong - 1) % totalSong;
+                } else if (loopMode == LOOP_ALL) {
+                    currentSong = totalSong - 1;
+                } else {
+                    stopMusic();
+                    return;
+                }
+            }
+            playMusic(songList.get(currentSong));
         }
-        playMusic(songList.get(currentSong));
     }
+
     public void stopMusic() {
         Log.d(TAG, "STOP");
         if (mediaPlayer != null) {
@@ -160,29 +213,26 @@ public class MusicService extends Service {
         playbackPosition = 0;
         isPlaying = false;
     }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-        }
-    }
+
     private void notifySongChanged(Song newSong) {
         if (songChangedListener != null) {
             songChangedListener.onSongChanged(newSong);
         }
     }
+
     public int getDuration() {
         if (mediaPlayer != null) {
             return mediaPlayer.getDuration();
         }
         return 0;
     }
+
     public void seekTo(int position) {
         if (mediaPlayer != null) {
             mediaPlayer.seekTo(position);
         }
     }
+
     public String createTimeLabel(int duration) {
         String timerLabel = "";
         int min = duration / 1000 / 60;
@@ -192,6 +242,7 @@ public class MusicService extends Service {
         timerLabel += sec;
         return timerLabel;
     }
+
     private void startUpdatingSeekBar() {
         handler.postDelayed(new Runnable() {
             @Override
@@ -205,4 +256,18 @@ public class MusicService extends Service {
         }, 1000); // Delayed start to match the update interval.
     }
 
+    public void toggleShuffleMode() {
+        isShuffleMode = !isShuffleMode;
+        if (isShuffleMode) {
+            shuffledSongList = new ArrayList<>(songList);
+            Collections.shuffle(shuffledSongList);
+            currentSong = 0;
+        } else {
+            shuffledSongList = null;
+        }
+    }
+
+    public void toggleLoopMode() {
+        loopMode = (loopMode + 1) % 3; // Cycle through LOOP_NONE, LOOP_ONE, LOOP_ALL
+    }
 }
