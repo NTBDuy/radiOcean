@@ -24,6 +24,63 @@
           "other_platform_oauth_client": []
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919825372872:android:ad6542a7a7f395c8f7f7fd",
+        "android_client_info": {
+          "package_name": "com.duy.radiocean.activity"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv8gyF8hLuJZSQd2Enj7_PM-XKpZCQkBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919825372872:android:0956310aed072e03f7f7fd",
+        "android_client_info": {
+          "package_name": "com.duy.radiocean0511"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv8gyF8hLuJZSQd2Enj7_PM-XKpZCQkBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919825372872:android:7afab37d87b70358f7f7fd",
+        "android_client_info": {
+          "package_name": "com.vinh.search_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv8gyF8hLuJZSQd2Enj7_PM-XKpZCQkBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "configuration_version": "1"

@@ -1,6 +1,9 @@
 package com.duy.radiocean.fragment;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,21 +12,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.duy.radiocean.R;
 import com.duy.radiocean.RecyclerViewInterface;
 import com.duy.radiocean.adapter.SongAdapter;
-import com.duy.radiocean.model.Album;
 import com.duy.radiocean.model.Song;
 import com.duy.radiocean.service.MusicService;
 import com.google.firebase.database.DataSnapshot;
@@ -34,43 +33,55 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class SearchFragment extends Fragment implements RecyclerViewInterface{
+public class SearchFragment extends Fragment implements RecyclerViewInterface, ServiceConnection {
     private RecyclerView songRV;
     private SongAdapter adapter;
     private ArrayList<Song> lstSong, tempLst;
     private MusicService musicService;
+    private boolean isServiceBound = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        // Bind to the MusicService
+        getActivity().bindService(new Intent(getActivity(), MusicService.class), this, Context.BIND_AUTO_CREATE);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // Unbind from the MusicService when the fragment is destroyed
+        if (isServiceBound) {
+            getActivity().unbindService(this);
+            isServiceBound = false;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         songRV = view.findViewById(R.id.idRVSongs);
         getDataFromDatabase();
         songRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new SongAdapter(getActivity(), lstSong, SearchFragment.this);
+        adapter = new SongAdapter(getActivity(), lstSong, this);
         songRV.setAdapter(adapter);
         return view;
     }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.actionSearch);
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        SearchView searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 filter(newText);
@@ -81,54 +92,59 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface{
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
     private void filter(String text) {
-        ArrayList<Song> filteredlist = new ArrayList<Song>();
-        tempLst = filteredlist;
+        ArrayList<Song> filteredList = new ArrayList<>();
+        tempLst = filteredList;
         for (Song item : lstSong) {
             if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
-                filteredlist.add(item);
-
+                filteredList.add(item);
             }
         }
-        if (filteredlist.isEmpty()) {
-            System.out.println("No data found");
-        } else {
-            adapter.filterList(filteredlist);
-        }
+        adapter.filterList(filteredList);
     }
 
     private void getDataFromDatabase() {
         lstSong = new ArrayList<>();
-        lstSong.clear();
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference ref = db.getReference("song");
-        System.out.println(ref);
-        ref.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("song").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("TAG", "onDataChange: "+"on dataChange running" );
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Song song = snapshot.getValue(Song.class);
-                    lstSong.add(song);
+                    lstSong.add(snapshot.getValue(Song.class));
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("tag", "Failed to read value.", databaseError.toException());
-                System.out.println("Get error:   "+databaseError.getMessage());
+                Log.e("SearchFragment", "Failed to read value.", databaseError.toException());
             }
         });
     }
 
     @Override
     public void onItemClick(int position) {
-        Log.e("onItemClick", "onItemClick: you are at pos = "+position
-                    +"with the id is "+ tempLst.get(position).getId());
+        if (isServiceBound) {
+            Song selectedSong = tempLst.get(position);
+            musicService.playMusic(selectedSong);
+        } else {
+            Log.e("SearchFragment", "MusicService is not bound");
+        }
     }
 
     @Override
     public void onAlbumClick(int position) {
+        // Handle album click if needed
+    }
 
+    // Implement ServiceConnection methods
+    @Override
+    public void onServiceConnected(ComponentName name, android.os.IBinder service) {
+        musicService = ((MusicService.LocalBinder) service).getService();
+        isServiceBound = true;
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        musicService = null;
+        isServiceBound = false;
     }
 }
