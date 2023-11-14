@@ -54,7 +54,7 @@ public class ListAlbumAdapter extends RecyclerView.Adapter<ListAlbumAdapter.View
                 @Override
                 public void onClick(View v) {
                     if (recyclerViewInterface != null) {
-                        int pos = getAdapterPosition();
+                        int pos = getBindingAdapterPosition();
 
                         if (pos != RecyclerView.NO_POSITION) {
                             recyclerViewInterface.onAlbumClick(pos);

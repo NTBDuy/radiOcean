@@ -110,9 +110,10 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
     public void onAlbumClick(int position) {
         Album album = lstAlbum.get(position);
         sharedViewModel.setSelectedAlbum(album);
-        // Chuyển sang AlbumFragment
         replaceFragment(new AlbumFragment());
     }
+
+
     private Intent createPlayIntent(int position) {
         Intent playIntent = new Intent(getActivity(), MusicService.class);
         playIntent.setAction("PLAY");
