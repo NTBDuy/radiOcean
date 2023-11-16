@@ -8,8 +8,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,16 +29,19 @@ import com.duy.radiocean.model.Song;
 import com.duy.radiocean.service.MusicService;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity implements MusicService.OnSongChangedListener {
     ActivityMainBinding binding;
     private MusicService musicService;
     private boolean isBound = false;
     private ServiceConnection serviceConnection;
     RelativeLayout relativeLayout;
-    private Button btnPlay, btnPause;
+    private ImageButton btnPlay;
     private TextView tvTitleSongPlaying, tvArtisSongPlaying;
-    private ImageView imgSongPlaying;
+    private CircleImageView imgSongPlaying;
     private FrameLayout frameLayoutNoSong, frameLayoutWithSong;
+    private boolean isPlaying = false;
     private Song songPlaying = new Song();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +82,11 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
             Log.d("MainActivity My Test", "checkMusicPlaybackStatus() is running");
             boolean isPlaying = musicService.isPlaying();
             updatePlayPauseButtonsVisibility(isPlaying);
+            animationControl(isPlaying);
         }
     }
     private void initWidgets() {
         btnPlay = findViewById(R.id.btnPlay);
-        btnPause = findViewById(R.id.btnPause);
         tvTitleSongPlaying = findViewById(R.id.txtNameSongPlaying);
         tvArtisSongPlaying = findViewById(R.id.txtSingerPlaying);
         imgSongPlaying = findViewById(R.id.imgSongPlaying);
@@ -91,17 +95,45 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
     }
     private void setButtonClickListeners() {
         btnPlay.setOnClickListener(v -> {
-            musicService.continueMusic();
-            updatePlayPauseButtonsVisibility(true);
+            if(!isPlaying){
+                musicService.continueMusic();
+                isPlaying = true;
+                animationControl(true);
+                updatePlayPauseButtonsVisibility(true);
+            }else{
+                musicService.pauseMusic();
+                isPlaying = false;
+                animationControl(false);
+                updatePlayPauseButtonsVisibility(false);
+            }
         });
-        btnPause.setOnClickListener(v -> {
-            musicService.pauseMusic();
-            updatePlayPauseButtonsVisibility(false);
-        });
+
     }
+
+    private void animationControl(boolean isPlaying) {
+        if(isPlaying) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    imgSongPlaying.animate().rotationBy(360).withEndAction(this).setDuration(10000)
+                            .setInterpolator(new LinearInterpolator()).start();
+                }
+            };
+            imgSongPlaying.animate().rotationBy(360).withEndAction(runnable).setDuration(10000)
+                    .setInterpolator(new LinearInterpolator()).start();
+        }else {
+            imgSongPlaying.animate().cancel();
+        }
+    }
+
     private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
-        btnPlay.setVisibility(isPlaying ? View.GONE : View.VISIBLE);
-        btnPause.setVisibility(isPlaying ? View.VISIBLE : View.GONE);
+        if (isPlaying) {
+            btnPlay.setBackgroundResource(R.drawable.pause);
+            animationControl(isPlaying);
+        } else {
+            btnPlay.setBackgroundResource(R.drawable.play);
+            animationControl(isPlaying);
+        }
     }
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -127,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
                     setValueForWidgets();
                     Log.d("MainActivity here", "CurrentSong is " + currentSong.getTitle());
                 }
+
             }
 
             @Override
@@ -135,11 +168,13 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
             }
         };
     }
-    private void setValueForWidgets() {
+    void setValueForWidgets() {
         if (songPlaying != null) {
             Picasso.get().load(songPlaying.getImgSong()).into(imgSongPlaying);
             tvTitleSongPlaying.setText(songPlaying.getTitle());
             tvArtisSongPlaying.setText(songPlaying.getArtist());
+            updatePlayPauseButtonsVisibility(true);
+            animationControl(true);
         }
     }
     @Override
@@ -165,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         if (newSong != null) {
             songPlaying = newSong;
             setValueForWidgets();
-            updatePlayPauseButtonsVisibility(true);
             Log.d("MainActivity here", "CurrentSong is " + newSong.getTitle());
         }
     }

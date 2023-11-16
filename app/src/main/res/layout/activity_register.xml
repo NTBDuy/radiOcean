@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
+    android:background="@drawable/gradient_background_home"
     tools:context=".authentication.Register">
     <RelativeLayout
         android:id="@+id/fullscreen"
@@ -19,11 +19,11 @@
             android:layout_marginTop="120dp"
             android:text="RadiOcean"
             android:textAlignment="center"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:textStyle="bold"
             android:layout_marginBottom="30dp"
+            android:textColor="#4B778D"
             android:fontFamily="sans-serif-condensed-medium"
-
             />
 
 
@@ -35,7 +35,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:text="CREATE"
-            android:background="@drawable/beautiful_button"
+            android:textColor="@color/white"
+            android:background="@drawable/music_controller"
             android:textStyle="bold"
             />
 
@@ -45,40 +46,43 @@
             android:layout_below="@+id/Register_View"
             android:layout_width="300dp"
             android:minHeight="48dp"
-            android:paddingLeft="20dp"
-            android:background="@drawable/beautiful_edittext"
+            android:paddingStart="20dp"
+            android:background="@drawable/text_edit"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name"
             android:hint="Name"
-            android:background="@drawable/beautiful_edittext"
+            android:background="@drawable/text_edit"
             android:layout_below="@+id/email"
             android:layout_width="300dp"
-            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
             android:minHeight="48dp"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/gender"
             android:hint="Gender"
-            android:background="@drawable/beautiful_edittext"
+            android:background="@drawable/text_edit"
             android:layout_below="@+id/name"
             android:layout_width="300dp"
-            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
             android:minHeight="48dp"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
             android:hint="Password"
-            android:background="@drawable/beautiful_edittext"
+            android:background="@drawable/text_edit"
             android:minHeight="48dp"
             android:layout_below="@+id/gender"
             android:layout_width="300dp"
-            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
             android:inputType="textPassword"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
@@ -92,8 +96,9 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:text="Click to Log in"
-            android:textSize="16dp"
-            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:textColor="#4B778D"
             android:layout_centerHorizontal="true"
             />
     </RelativeLayout>

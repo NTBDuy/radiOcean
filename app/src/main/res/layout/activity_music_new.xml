@@ -2,29 +2,29 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_background"
-        tools:context=".MainActivity"
-        >
+        android:background="@drawable/gradient_background_music"
+        tools:context=".MainActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="591dp">
+            android:layout_height="500dp">
 
             <TextView
                 android:id="@+id/TxtPlayingFromPlaylist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="89.5dp"
-                android:text="Playing from playsist"
+                android:layout_marginTop="50dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Playing from"
                 android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="25sp"/>
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/tvSongAlbumNew"
@@ -33,168 +33,179 @@
                 android:layout_below="@+id/TxtPlayingFromPlaylist"
                 android:text="Playlist name"
                 android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
 
-            <!--            <androidx.recyclerview.widget.RecyclerView-->
-            <!--                android:id="@+id/Rcv_songs"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:layout_below="@id/TxtPlaylistName"-->
-            <!--                android:layout_marginTop="30dp"/>-->
 
-            <ImageView
-                android:id="@+id/imgSongPlayingFromMusicNew"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgDiskSongPlayingFromMusicNew"
+                android:layout_width="350dp"
+                android:layout_height="350dp"
                 android:layout_below="@+id/tvSongAlbumNew"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="60dp"
-                android:alpha="0.4"
-                android:background="@drawable/anh"
-                android:importantForAccessibility="no" />
+                android:layout_marginTop="40dp"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop"
+                android:src="@drawable/disk" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgSongPlayingFromMusicNew"
+                android:layout_width="100dp"
+                android:layout_height="350dp"
+                android:layout_below="@+id/tvSongAlbumNew"
+                android:layout_marginTop="40dp"
+                android:layout_centerHorizontal="true"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop"
+                android:src="@drawable/anh" />
+
+
 
             <ImageButton
                 android:id="@+id/btnBackFromMusicNew"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="85dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="50dp"
                 android:background="@null"
+                android:importantForAccessibility="no"
                 android:rotation="-90"
-                android:src="@drawable/back"
-                android:importantForAccessibility="no" />
+                android:src="@drawable/back" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="591dp"
+            android:layout_height="391dp"
+            android:layout_marginTop="500dp"
             tools:ignore="MissingConstraints">
 
 
             <TextView
                 android:id="@+id/tvSongTitleNew"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="37dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
                 android:text="Song name"
-                android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:textColor="#3D0C11"
+                android:textSize="35sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvSongArtistNew"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvSongTitleNew"
-                android:layout_marginStart="37dp"
+                android:layout_centerHorizontal="true"
                 android:text="Singer"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textColor="#000000"
+                android:textSize="25sp" />
 
 
             <RelativeLayout
                 android:id="@+id/musicController"
                 android:layout_width="370dp"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_below="@id/tvSongArtistNew"
                 android:layout_marginStart="20.5dp"
-                android:layout_marginTop="50dp">
+                android:layout_marginTop="40dp">
 
                 <TextView
                     android:id="@+id/tvTimeCurrentNew"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/seekBarNew"
+                    android:layout_alignStart="@+id/seekBarNew"
+                    android:layout_centerVertical="true"
                     android:text="00:00"
-                    android:layout_marginLeft="35dp"
-                    android:layout_marginBottom="20dp"
-                    android:textSize="10sp"
                     android:textColor="@color/black"
-                    android:layout_alignBottom="@id/seekBarNew"
-                    />
+                    android:textSize="10sp" />
 
                 <TextView
                     android:id="@+id/tvTimeTotalNew"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/seekBarNew"
+                    android:layout_alignRight="@+id/seekBarNew"
                     android:text="00:00"
-                    android:layout_marginLeft="305dp"
-                    android:layout_marginBottom="20dp"
-                    android:textSize="10sp"
                     android:textColor="@color/black"
-                    android:layout_alignBottom="@id/seekBarNew"
-                    />
+                    android:textSize="10sp" />
 
                 <SeekBar
                     android:id="@+id/seekBarNew"
-                    android:layout_width="300dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
-                    android:backgroundTint="#FFF"/>
+                    android:backgroundTint="#FFF"
+                    android:progress="40" />
 
+                <RelativeLayout
+                    android:layout_width="200dp"
+                    android:layout_height="70dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/music_controller">
 
-                <ImageButton
-                    android:id="@+id/btnPlayFromMusicNew"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_below="@+id/seekBarNew"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/play"
-                    android:src="@null"
-                    android:importantForAccessibility="no"
-                    android:onClick="Play"/>
+                    <ImageButton
+                        android:id="@+id/btnPlayFromMusicNew"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/play"
+                        android:importantForAccessibility="no"
+                        android:src="@null" />
 
-                <ImageButton
-                    android:id="@+id/btnNextFromMusicNew"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignTop="@id/btnPlayFromMusicNew"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@id/btnPlayFromMusicNew"
-                    android:background="@null"
-                    android:src="@drawable/forward"
-                    android:importantForAccessibility="no"
-                    android:onClick="PlayNext"/>
+                    <ImageButton
+                        android:id="@+id/btnNextFromMusicNew"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignTop="@id/btnPlayFromMusicNew"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@id/btnPlayFromMusicNew"
+                        android:background="@null"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/forward" />
 
-                <ImageButton
-                    android:id="@+id/btnPreviousFromMusicNew"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignTop="@id/btnPlayFromMusicNew"
-                    android:layout_marginEnd="20dp"
-                    android:layout_toStartOf="@+id/btnPlayFromMusicNew"
-                    android:background="@null"
-                    android:rotation="180"
-                    android:src="@drawable/backward"
-                    android:importantForAccessibility="no"
-                    android:onClick="PlayPrev"/>
+                    <ImageButton
+                        android:id="@+id/btnPreviousFromMusicNew"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignTop="@id/btnPlayFromMusicNew"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_toStartOf="@+id/btnPlayFromMusicNew"
+                        android:background="@null"
+                        android:importantForAccessibility="no"
+                        android:rotation="180"
+                        android:src="@drawable/backward" />
+                </RelativeLayout>
+
 
                 <ImageButton
                     android:id="@+id/btnLoop"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_alignTop="@id/btnNextFromMusicNew"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@id/btnNextFromMusicNew"
+                    android:layout_centerVertical="true"
                     android:background="@null"
+                    android:layout_alignEnd="@+id/tvTimeTotalNew"
+                    android:onClick="Loop"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/loop"
-                    android:onClick="Loop"/>
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/loop" />
 
                 <ImageButton
                     android:id="@+id/btnShuffle"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_alignTop="@id/btnPreviousFromMusicNew"
-                    android:layout_marginEnd="20dp"
-                    android:layout_toStartOf="@id/btnPreviousFromMusicNew"
+                    android:layout_alignStart="@+id/tvTimeCurrentNew"
+                    android:layout_centerVertical="true"
                     android:background="@null"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/shuffle"
-                    android:onClick="Shuffle"/>
+                    android:onClick="Shuffle"
+                    android:src="@drawable/shuffle" />
 
 
             </RelativeLayout>

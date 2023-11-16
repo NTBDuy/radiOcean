@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
     }
     @Override
     public void onViewCreated(@NonNull View view,
-                  @Nullable Bundle savedInstanceState) {
+                              @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initWidgets();
         rvSong.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -110,10 +110,9 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
     public void onAlbumClick(int position) {
         Album album = lstAlbum.get(position);
         sharedViewModel.setSelectedAlbum(album);
+        // Chuyển sang AlbumFragment
         replaceFragment(new AlbumFragment());
     }
-
-
     private Intent createPlayIntent(int position) {
         Intent playIntent = new Intent(getActivity(), MusicService.class);
         playIntent.setAction("PLAY");

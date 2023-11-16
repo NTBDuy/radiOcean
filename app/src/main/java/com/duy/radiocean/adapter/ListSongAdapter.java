@@ -43,7 +43,7 @@ public class ListSongAdapter extends RecyclerView.Adapter<ListSongAdapter.ViewHo
     public int getItemCount() {
         return items.size();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView id, title, artist, time;
         ImageView img;

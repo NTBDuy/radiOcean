@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,13 +29,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MusicActivity extends AppCompatActivity implements MusicService.OnSongChangedListener {
     // ...
     private MusicService musicService;
     private boolean isBound = false;
     private ServiceConnection serviceConnection;
     private ImageButton btnBackFromMusicAct, btnPlay, btnSuff, btnLoop, btnNext, btnPrev;
-    private ImageView imgSong;
+    private CircleImageView imgSong, imgDisk;
     private TextView tvTitle, tvArtist, tvAlbum, tvCurTime, tvTotalTime;
     private SeekBar seekBar;
     private Handler seekBarHandler;
@@ -70,6 +73,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         btnSuff = findViewById(R.id.btnShuffle);
         btnLoop = findViewById(R.id.btnLoop);
         imgSong = findViewById(R.id.imgSongPlayingFromMusicNew);
+        imgDisk = findViewById(R.id.imgDiskSongPlayingFromMusicNew);
         tvTitle = findViewById(R.id.tvSongTitleNew);
         tvArtist = findViewById(R.id.tvSongArtistNew);
         tvAlbum = findViewById(R.id.tvSongAlbumNew);
@@ -86,6 +90,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
                 finish();
             }
         });
+
 
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,8 +160,10 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
     private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
         if (isPlaying) {
             btnPlay.setBackgroundResource(R.drawable.pause);
+            animationControl(isPlaying);
         } else {
             btnPlay.setBackgroundResource(R.drawable.play);
+            animationControl(isPlaying);
         }
 //        btnPlay.setVisibility(isPlaying ? View.GONE : View.VISIBLE);
 //        btnPause.setVisibility(isPlaying ? View.VISIBLE : View.GONE);
@@ -252,5 +259,26 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         Log.e("NEXT SONG TEST", "onSongChanged is running!");
         updatePlayPauseButtonsVisibility(true);
         setValueForWidgets();
+    }
+
+    private void animationControl(boolean isPlaying) {
+        if(isPlaying) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    imgSong.animate().rotationBy(360).withEndAction(this).setDuration(10000)
+                            .setInterpolator(new LinearInterpolator()).start();
+                    imgDisk.animate().rotationBy(360).withEndAction(this).setDuration(10000)
+                            .setInterpolator(new LinearInterpolator()).start();
+                }
+            };
+            imgSong.animate().rotationBy(360).withEndAction(runnable).setDuration(10000)
+                    .setInterpolator(new LinearInterpolator()).start();
+            imgDisk.animate().rotationBy(360).withEndAction(runnable).setDuration(10000)
+                    .setInterpolator(new LinearInterpolator()).start();
+        }else {
+            imgSong.animate().cancel();
+            imgDisk.animate().cancel();
+        }
     }
 }

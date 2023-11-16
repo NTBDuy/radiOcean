@@ -6,11 +6,13 @@
     android:paddingBottom="10dp">
 
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgSong"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="20dp"/>
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_centerVertical="true"
+        android:importantForAccessibility="no" />
 
     <TextView
         android:id="@+id/txtNameSong"
@@ -45,5 +47,5 @@
         android:padding="5dp"
         android:gravity="center"
         android:layout_marginStart="300dp"/>
-    
+
 </RelativeLayout>

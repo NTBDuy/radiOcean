@@ -5,13 +5,14 @@
     android:layout_height="80dp"
     android:padding="10dp"
     android:layout_marginStart="5dp"
-    android:background="@drawable/border_playing_song">
+    android:background="@drawable/playing_song">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgSongPlaying"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="10dp"/>
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:layout_centerVertical="true"/>
 
     <TextView
         android:id="@+id/txtNameSongPlaying"
@@ -23,6 +24,7 @@
         android:singleLine="true"
         android:layout_toEndOf="@id/imgSongPlaying"
         android:padding="2dp"
+        android:textColor="@color/white"
         android:layout_marginStart="10dp"/>
 
     <TextView
@@ -33,21 +35,16 @@
         android:layout_toEndOf="@id/imgSongPlaying"
         android:layout_below="@id/txtNameSongPlaying"
         android:padding="2dp"
+        android:textColor="@color/white"
         android:layout_marginStart="10dp"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/btnPlay"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/ic_launcher_play_foreground" />
-
-    <Button
-        android:id="@+id/btnPause"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone"
-        android:background="@drawable/ic_launcher_pause_foreground" />
+        android:layout_marginEnd="50dp"
+        android:importantForAccessibility="no"
+        android:background="@drawable/play" />
 
 </RelativeLayout>
