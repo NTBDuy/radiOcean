@@ -3,119 +3,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.AlbumFragment">
+    tools:context=".fragment.AlbumFragment"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:background="@drawable/main_background"
 
-        <ImageView
-            android:id="@+id/background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/gradient_background_home"
-            android:importantForAccessibility="no" />
+        >
 
 
         <ImageButton
             android:id="@+id/btnBackFromAlbum"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="10dp"
             android:importantForAccessibility="no"
             android:layout_marginTop="30dp"
             android:background="@null"
             android:src="@drawable/back" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@+id/TxtNamePlaylist"
+            android:layout_marginTop="20dp"
+            >
+
+            <ImageView
+                android:id="@+id/imgAlbum2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test2"
+                android:importantForAccessibility="no" />
+
+            <ImageView
+                android:id="@+id/imgAlbum1"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="30dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/test2" />
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/TxtNamePlaylist"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="65dp"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignTop="@+id/btnBackFromAlbum"
             android:lineSpacingExtra="50dp"
             android:text="NAME PLAYLIST"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="23sp"
-            android:textStyle="bold" />
+            android:textColor="@color/black"
+            android:textSize="21sp"
+            android:fontFamily="@font/gothamfont_21016"/>
 
-        <ImageView
-            android:id="@+id/imgAlbum2"
-            android:layout_width="match_parent"
-            android:layout_height="260dp"
-            android:layout_below="@+id/TxtNamePlaylist"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test2"
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layoutPopular"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="383dp">
+
+        <TextView
+            android:id="@+id/txtTitlePopular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/btnPlayInAlbum"
+            android:layout_marginStart="25dp"
+            android:fontFamily="@font/gothamfont_21016"
+            android:text="List song"
+            android:textColor="@color/black"
+            android:textSize="21sp" />
+
+        <ImageButton
+            android:id="@+id/btnPlayInAlbum"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/play"
             android:importantForAccessibility="no" />
 
-        <ImageView
-            android:id="@+id/imgAlbum1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@+id/TxtNamePlaylist"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/test2"
-            android:importantForAccessibility="no" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/txtTitlePopular"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp">
 
-        <RelativeLayout
-            android:id="@+id/layoutPopular"
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_marginTop="383dp">
-
-            <TextView
-                android:id="@+id/txtTitlePopular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="25dp"
-                android:text="List song"
-                android:textSize="30sp"
-                android:textStyle="italic"
-                android:textColor="@color/white"/>
-
-            <ImageButton
-                android:id="@+id/btnPlayInAlbum"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:importantForAccessibility="no"
-                android:background="@drawable/play" />
-
-            <!--            <Button-->
-            <!--                android:id="@+id/btnPauseInAlbum"-->
-            <!--                android:layout_width="60dp"-->
-            <!--                android:layout_height="60dp"-->
-            <!--                android:layout_alignParentEnd="true"-->
-            <!--                android:layout_marginTop="10dp"-->
-            <!--                android:layout_marginEnd="20dp"-->
-            <!--                android:visibility="gone"-->
-            <!--                android:background="@drawable/ic_launcher_pause_foreground" />-->
-
-            <LinearLayout
-                android:layout_width="380dp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvListSongFromAlbum"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/txtTitlePopular"
-                android:layout_marginTop="20dp"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/border_list_song"
-                >
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvListSongFromAlbum"
-                    android:layout_width="400dp"
-                    android:layout_height="match_parent"
-                    android:elevation="2dp"
-                    android:padding="10dp" />
-            </LinearLayout>
-
-
-        </RelativeLayout>
+                android:layout_marginBottom="140dp"
+                android:elevation="2dp"
+                android:padding="10dp" />
+        </LinearLayout>
 
     </RelativeLayout>
 

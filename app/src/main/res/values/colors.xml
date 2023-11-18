@@ -3,7 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bg_navbar">#e6f5ff</color>
-    <color name="bg_playing">#c4c4c4</color>
-    <color name="bg_app">#FFFFFFFF</color>
+    <color name="bg_playing">#f2f2f2</color>
+    <color name="bg_app">#ffc2b3</color>
+    <color name="transparent">#c7a2d9</color>
 
 </resources>

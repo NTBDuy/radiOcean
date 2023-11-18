@@ -85,7 +85,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
         btnPlayInAlbum = requireActivity().findViewById(R.id.btnPlayInAlbum);
         txtNameAlbum = requireActivity().findViewById(R.id.TxtNamePlaylist);
         rvSong = requireActivity().findViewById(R.id.rvListSongFromAlbum);
-        imgAlbum2.setRenderEffect(RenderEffect.createBlurEffect(10, 10, Shader.TileMode.MIRROR));
+        imgAlbum2.setRenderEffect(RenderEffect.createBlurEffect(50, 50, Shader.TileMode.MIRROR));
     }
 
     private void setButtonClickListeners() {

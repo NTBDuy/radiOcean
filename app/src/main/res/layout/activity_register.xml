@@ -4,26 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background_home"
     tools:context=".authentication.Register">
     <RelativeLayout
         android:id="@+id/fullscreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/main_background"
         >
         <TextView
             android:id="@+id/Register_View"
-            android:layout_width="180dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="120dp"
             android:text="RadiOcean"
             android:textAlignment="center"
             android:textSize="40sp"
-            android:textStyle="bold"
             android:layout_marginBottom="30dp"
-            android:textColor="#4B778D"
-            android:fontFamily="sans-serif-condensed-medium"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:fontFamily="@font/satisfy_regular"
             />
 
 
@@ -34,6 +34,7 @@
             android:layout_below="@id/password"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
+            android:fontFamily="@font/gothamfont_21016"
             android:text="CREATE"
             android:textColor="@color/white"
             android:background="@drawable/music_controller"
@@ -47,6 +48,7 @@
             android:layout_width="300dp"
             android:minHeight="48dp"
             android:paddingStart="20dp"
+            android:fontFamily="@font/gothamfont_21016"
             android:background="@drawable/text_edit"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
@@ -59,6 +61,7 @@
             android:layout_width="300dp"
             android:paddingStart="20dp"
             android:minHeight="48dp"
+            android:fontFamily="@font/gothamfont_21016"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
@@ -71,6 +74,7 @@
             android:layout_width="300dp"
             android:paddingStart="20dp"
             android:minHeight="48dp"
+            android:fontFamily="@font/gothamfont_21016"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
@@ -84,6 +88,7 @@
             android:layout_width="300dp"
             android:paddingStart="20dp"
             android:inputType="textPassword"
+            android:fontFamily="@font/gothamfont_21016"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
@@ -95,10 +100,11 @@
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
+            android:fontFamily="@font/gothamfont_21016"
             android:text="Click to Log in"
             android:textSize="16sp"
             android:textStyle="italic"
-            android:textColor="#4B778D"
+            android:textColor="@color/black"
             android:layout_centerHorizontal="true"
             />
     </RelativeLayout>

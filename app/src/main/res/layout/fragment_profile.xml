@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_background">
+        android:background="@drawable/main_background">
 
         <TextView
             android:id="@+id/Profile_avatar"
@@ -28,9 +28,9 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
             android:layout_toEndOf="@+id/Profile_avatar"
-            android:fontFamily="sans-serif-condensed-medium"
             android:text="Name here"
-            android:textColor="@color/white"
+            android:fontFamily="@font/gothamfont_21016"
+            android:textColor="@color/black"
             android:textSize="30sp" />
 
         <TextView
@@ -41,9 +41,9 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/Profile_avatar"
-            android:fontFamily="sans-serif-condensed-medium"
             android:text="Email here"
-            android:textColor="@color/white"
+            android:fontFamily="@font/gothamfont_21016"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -54,6 +54,7 @@
             android:layout_marginTop="500dp"
             android:background="@drawable/music_controller"
             android:text="LOG OUT"
+            android:fontFamily="@font/gothamfont_21016"
             android:textColor="@color/white"
             android:textStyle="bold" />
 

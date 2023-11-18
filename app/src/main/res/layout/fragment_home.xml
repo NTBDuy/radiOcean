@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
     tools:context=".fragment.HomeFragment">
 
     <RelativeLayout
         android:id="@+id/mainDisplay"
         android:layout_width="match_parent"
-        android:layout_height="370dp"
-        >
+        android:layout_height="310dp"
+        android:background="@drawable/home_background">
+
         <TextView
             android:id="@+id/TextPopular"
             android:layout_width="wrap_content"
@@ -40,14 +40,15 @@
         android:id="@+id/layoutPopular"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="283dp">
+        android:layout_marginTop="310dp"
+        android:background="@color/white"
+        >
 
         <TextView
             android:id="@+id/txtTitlePopular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
             android:text="Trending music"
             android:textColor="@color/black"
             android:textSize="21sp"
@@ -63,7 +64,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="140dp"
             android:elevation="2dp"
-            android:padding="6dp" />
+            android:padding="6dp"
+            />
 
     </RelativeLayout>
 

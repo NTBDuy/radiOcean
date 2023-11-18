@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         imgSongPlaying = findViewById(R.id.imgSongPlaying);
 //        frameLayoutNoSong = findViewById(R.id.now_playing_container_replace);
         frameLayoutWithSong = findViewById(R.id.now_playing_container);
+        checkMusicPlaybackStatus();
     }
     private void setButtonClickListeners() {
         btnPlay.setOnClickListener(v -> {
@@ -181,8 +182,9 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
             Picasso.get().load(songPlaying.getImgSong()).into(imgSongPlaying);
             tvTitleSongPlaying.setText(songPlaying.getTitle());
             tvArtisSongPlaying.setText(songPlaying.getArtist());
-            updatePlayPauseButtonsVisibility(true);
-            animationControl(true);
+            isPlaying = true;
+            updatePlayPauseButtonsVisibility(isPlaying);
+            animationControl(isPlaying);
         }
     }
     @Override

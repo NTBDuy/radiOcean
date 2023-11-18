@@ -25,6 +25,7 @@
         android:layout_toEndOf="@id/imgSongPlaying"
         android:padding="2dp"
         android:textColor="@color/black"
+        android:fontFamily="@font/gothamfont_21016"
         android:layout_marginStart="10dp"/>
 
     <TextView
@@ -36,6 +37,7 @@
         android:layout_below="@id/txtNameSongPlaying"
         android:padding="2dp"
         android:textColor="@color/black"
+        android:fontFamily="@font/gothamfont_21016"
         android:layout_marginStart="10dp"/>
 
     <ImageButton
