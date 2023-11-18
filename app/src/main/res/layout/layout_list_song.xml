@@ -2,17 +2,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgSong"
+    <androidx.cardview.widget.CardView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_centerVertical="true"
-        android:importantForAccessibility="no" />
+        android:importantForAccessibility="no"
+        app:cardCornerRadius="10dp"
+        app:contentPadding="2dp"
+        app:cardBackgroundColor="@color/black">
+        
+        <androidx.cardview.widget.CardView
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            app:cardCornerRadius="10dp"
+           >
+            <ImageView
+                android:id="@+id/imgSong"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"
+                android:background="@drawable/anh"/>
+
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/txtNameSong"
@@ -22,7 +40,7 @@
         android:textStyle="bold"
         android:textSize="16sp"
         android:singleLine="true"
-        android:layout_toEndOf="@id/imgSong"
+        android:layout_centerHorizontal="true"
         android:padding="4dp"
         android:layout_marginStart="10dp"/>
 
@@ -33,10 +51,10 @@
         android:text="Singer"
         android:textSize="16sp"
         android:singleLine="true"
-        android:layout_toEndOf="@id/imgSong"
+        android:layout_alignStart="@+id/txtNameSong"
         android:layout_below="@id/txtNameSong"
         android:padding="4dp"
-        android:layout_marginStart="10dp"/>
+        />
 
     <TextView
         android:id="@+id/txtTime"
@@ -46,6 +64,7 @@
         android:textSize="16sp"
         android:padding="5dp"
         android:gravity="center"
-        android:layout_marginStart="300dp"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"/>
 
 </RelativeLayout>

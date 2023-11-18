@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_background_home">
+        android:background="@drawable/gradient_background">
 
         <TextView
             android:id="@+id/Profile_avatar"

@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,6 +29,7 @@ import com.duy.radiocean.fragment.ProfileFragment;
 import com.duy.radiocean.fragment.SearchFragment;
 import com.duy.radiocean.model.Song;
 import com.duy.radiocean.service.MusicService;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -54,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
 
         replaceFragment(new HomeFragment());
 
-        binding.bottomNavigation.setOnItemReselectedListener(item -> {
+
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.home) {
                 replaceFragment(new HomeFragment());
             } else if (item.getItemId() == R.id.profile) {
@@ -62,7 +66,9 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
             } else if (item.getItemId() == R.id.search) {
                 replaceFragment(new SearchFragment());
             }
+            return false;
         });
+
         relativeLayout = findViewById(R.id.layoutPlaying);
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         setButtonClickListeners();
         loadPlayingSongFromService();
     }
+
+
     private void checkMusicPlaybackStatus() {
         if (isBound && musicService != null) {
             Log.d("MainActivity My Test", "checkMusicPlaybackStatus() is running");

@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.duy.radiocean.R;
 import com.duy.radiocean.RecyclerViewInterface;
+import com.duy.radiocean.activity.MainActivity;
 import com.duy.radiocean.adapter.SongAdapter;
 import com.duy.radiocean.model.Song;
 import com.duy.radiocean.service.MusicService;
@@ -44,10 +47,18 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface, S
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
         // Bind to the MusicService
         getActivity().bindService(new Intent(getActivity(), MusicService.class), this, Context.BIND_AUTO_CREATE);
     }
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+    }
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
+
 
     @Override
     public void onDestroy() {
@@ -68,7 +79,9 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface, S
         songRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
         adapter = new SongAdapter(getActivity(), lstSong, this);
         songRV.setAdapter(adapter);
+
         return view;
+
     }
 
     @Override

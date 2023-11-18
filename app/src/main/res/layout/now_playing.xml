@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layoutPlaying"
-    android:layout_width="401dp"
+    android:layout_width="match_parent"
     android:layout_height="80dp"
     android:padding="10dp"
-    android:layout_marginStart="5dp"
-    android:background="@drawable/playing_song">
+    android:background="@drawable/playing_song"
+    >
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgSongPlaying"
@@ -24,7 +24,7 @@
         android:singleLine="true"
         android:layout_toEndOf="@id/imgSongPlaying"
         android:padding="2dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_marginStart="10dp"/>
 
     <TextView
@@ -35,15 +35,16 @@
         android:layout_toEndOf="@id/imgSongPlaying"
         android:layout_below="@id/txtNameSongPlaying"
         android:padding="2dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_marginStart="10dp"/>
 
     <ImageButton
         android:id="@+id/btnPlay"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="30dp"
+        android:layout_centerVertical="true"
         android:importantForAccessibility="no"
         android:background="@drawable/play" />
 

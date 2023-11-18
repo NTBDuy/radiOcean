@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -60,6 +62,10 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_album, container, false);
     }
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -69,6 +75,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
         rvSong.setLayoutManager(new LinearLayoutManager(view.getContext()));
         album = sharedViewModel.getSelectedAlbum();
         setDataForWidgets();
+
     }
 
     private void initWidgets() {
@@ -185,4 +192,5 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
         putIntent.putExtra("SONG_LIST", songList);
         requireActivity().startService(putIntent.setAction("LOAD_DATA"));
     }
+
 }

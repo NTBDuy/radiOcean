@@ -10,6 +10,8 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -53,6 +55,10 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
     @Override
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
@@ -62,6 +68,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
         rvAlbum.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
         getDataFromDatabase();
         setButtonClickListeners();
+
     }
     private void initWidgets() {
         rvSong = requireActivity().findViewById(R.id.recyclerViewListSong);
@@ -133,4 +140,5 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
         fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.commit();
     }
+
 }

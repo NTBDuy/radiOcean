@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.duy.radiocean.R;
@@ -53,8 +55,6 @@ public class ProfileFragment extends Fragment implements MusicService.OnSongChan
                 System.out.println("successful");
             }
         });
-
-
         name = view.findViewById(R.id.name);
         email = view.findViewById(R.id.email);
         try{
@@ -64,9 +64,14 @@ public class ProfileFragment extends Fragment implements MusicService.OnSongChan
         }
         return view;
     }
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
     }
     public void getdata(){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -104,6 +109,7 @@ public class ProfileFragment extends Fragment implements MusicService.OnSongChan
     }
     @Override
     public void onSongChanged(Song newSong) {}
+
 }
 
 
