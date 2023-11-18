@@ -15,12 +15,12 @@
             android:id="@+id/TextPopular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Have a good day"
-            android:textSize="25sp"
-            android:layout_marginStart="20dp"
+            android:text="Albums"
+            android:textSize="23sp"
+            android:layout_marginStart="25dp"
             android:textStyle="bold"
             android:layout_marginTop="30dp"
-            android:fontFamily="sans-serif-condensed-medium"
+            android:fontFamily="@font/gothamfont_21016"
             android:textColor="@color/black"
             />
 
@@ -48,11 +48,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="25dp"
-            android:text="Top-music"
+            android:text="Trending music"
             android:textColor="@color/black"
-            android:textSize="25sp"
-            android:textStyle="italic"
-            android:fontFamily="sans-serif-condensed-medium"/>
+            android:textSize="21sp"
+            android:fontFamily="@font/gothamfont_21016"/>
 
 
         <androidx.recyclerview.widget.RecyclerView
