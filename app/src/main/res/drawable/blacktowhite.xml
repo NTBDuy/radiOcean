@@ -15,7 +15,6 @@
     <!-- Second Layer: Image -->
     <item>
         <bitmap
-            android:src="@drawable/test2"
             android:gravity="fill"
             android:tileMode="disabled" />
     </item>

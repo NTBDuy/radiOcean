@@ -33,7 +33,7 @@
             android:layout_below="@id/password"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:background="@drawable/music_controller"
+            android:background="@drawable/button_border"
             android:fontFamily="@font/gothamfont_21016"
             android:text="LOG IN"
             android:textColor="@color/white"

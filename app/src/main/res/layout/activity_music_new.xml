@@ -62,7 +62,7 @@
                 android:layout_centerHorizontal="true"
                 android:importantForAccessibility="no"
                 android:scaleType="centerCrop"
-                android:src="@drawable/anh" />
+                 />
 
 
 
@@ -193,8 +193,8 @@
 
                 <ImageButton
                     android:id="@+id/btnLoop"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:background="@null"
                     android:layout_alignEnd="@+id/tvTimeTotalNew"
@@ -206,8 +206,8 @@
 
                 <ImageButton
                     android:id="@+id/btnShuffle"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignStart="@+id/tvTimeCurrentNew"
                     android:layout_centerVertical="true"
                     android:background="@null"

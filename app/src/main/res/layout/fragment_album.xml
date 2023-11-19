@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/main_background"
-
         >
 
 
@@ -21,7 +20,6 @@
             android:layout_marginStart="10dp"
             android:importantForAccessibility="no"
             android:layout_marginTop="30dp"
-            android:background="@null"
             android:src="@drawable/back" />
 
         <RelativeLayout
@@ -37,7 +35,6 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
-                android:src="@drawable/test2"
                 android:importantForAccessibility="no" />
 
             <ImageView
@@ -46,8 +43,7 @@
                 android:layout_height="200dp"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="30dp"
-                android:importantForAccessibility="no"
-                android:src="@drawable/test2" />
+                android:importantForAccessibility="no" />
         </RelativeLayout>
 
         <TextView

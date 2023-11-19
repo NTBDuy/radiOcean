@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="500dp"
-            android:background="@drawable/music_controller"
+            android:background="@drawable/button_border"
             android:text="LOG OUT"
             android:fontFamily="@font/gothamfont_21016"
             android:textColor="@color/white"

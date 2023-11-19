@@ -37,7 +37,7 @@
             android:fontFamily="@font/gothamfont_21016"
             android:text="CREATE"
             android:textColor="@color/white"
-            android:background="@drawable/music_controller"
+            android:background="@drawable/button_border"
             android:textStyle="bold"
             />
 
