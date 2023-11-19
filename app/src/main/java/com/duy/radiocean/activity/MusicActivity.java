@@ -8,14 +8,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +37,6 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
     private CircleImageView imgSong, imgDisk;
     private TextView tvTitle, tvArtist, tvAlbum, tvCurTime, tvTotalTime;
     private SeekBar seekBar;
-    private Handler seekBarHandler;
     private Song songPlaying = new Song();
 
     private final BroadcastReceiver seekBarReceiver = new BroadcastReceiver() {
@@ -110,7 +106,8 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             public void onClick(View v) {
                 musicService.toggleShuffleMode();
                 // Update the UI to reflect the shuffle mode status
-//                updateShuffleButtonUI();
+
+                updateShuffleButtonUI(musicService.isShuffle());
             }
         });
 
@@ -119,7 +116,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             public void onClick(View v) {
                 musicService.toggleLoopMode();
                 // Update the UI to reflect the loop mode status
-//                updateLoopButtonUI();
+                updateLoopButtonUI(musicService.isLoop());
             }
         });
 
@@ -139,7 +136,6 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             }
         });
 
-        seekBarHandler = new Handler();
         // Set up the seek bar change listener
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -157,16 +153,19 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             }
         });
     }
+    private void updateShuffleButtonUI(boolean isShuffle) {
+        btnSuff.setBackgroundResource(isShuffle ? R.drawable.shuffle_on : R.drawable.shuffle);
+    }
+
+    private void updateLoopButtonUI(int isLoop) {
+        if (isLoop==1) btnLoop.setBackgroundResource(R.drawable.repeat_one_on);
+        else if (isLoop==2) btnLoop.setBackgroundResource(R.drawable.repeat_on);
+        else btnLoop.setBackgroundResource(R.drawable.repeat);
+    }
+
     private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
-        if (isPlaying) {
-            btnPlay.setBackgroundResource(R.drawable.pause);
-            animationControl(isPlaying);
-        } else {
-            btnPlay.setBackgroundResource(R.drawable.play);
-            animationControl(isPlaying);
-        }
-//        btnPlay.setVisibility(isPlaying ? View.GONE : View.VISIBLE);
-//        btnPause.setVisibility(isPlaying ? View.VISIBLE : View.GONE);
+        btnPlay.setBackgroundResource(isPlaying ? R.drawable.pause : R.drawable.play);
+        animationControl(isPlaying);
     }
     private void loadPlayingSongFromService() {
         serviceConnection = new ServiceConnection() {
@@ -212,13 +211,18 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
                         Toast.makeText(v.getContext(),"Nothing to prev!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-//                btnPause.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(v.getContext(),"Nothing to pause!", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+                btnSuff.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(),"Please choose song to play!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btnLoop.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(),"Please choose song to play!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             } else {
                 Picasso.get().load(songPlaying.getImgSong()).into(imgSong);
                 tvTitle.setText(songPlaying.getTitle());
@@ -228,6 +232,8 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             }
         }
         updatePlayPauseButtonsVisibility(musicService.isPlaying());
+        updateShuffleButtonUI(musicService.isShuffle());
+        updateLoopButtonUI(musicService.isLoop());
     }
     private void updateSeekBarPosition(int currentPosition) {
         seekBar.setProgress(currentPosition/1000);
@@ -258,6 +264,8 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         songPlaying = newSong;
         Log.e("NEXT SONG TEST", "onSongChanged is running!");
         updatePlayPauseButtonsVisibility(true);
+        updateShuffleButtonUI(musicService.isShuffle());
+        updateLoopButtonUI(musicService.isLoop());
         setValueForWidgets();
     }
 

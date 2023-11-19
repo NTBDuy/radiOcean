@@ -114,6 +114,10 @@ public class MusicService extends Service {
         return mediaPlayer != null && mediaPlayer.isPlaying();
     }
 
+    public boolean isShuffle() { return isShuffleMode; }
+
+    public int isLoop() { return loopMode; }
+
     public void playMusic(Song song) {
         Log.d(TAG, "PLAY");
         if (song != null) {
@@ -158,52 +162,73 @@ public class MusicService extends Service {
     }
 
     public void playNextTrack() {
-        Log.d(TAG, "NEXT TRACK");
-        if (isShuffleMode) {
-            if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
-                currentSong = (currentSong + 1) % shuffledSongList.size();
-                playMusic(shuffledSongList.get(currentSong));
+        if (loopMode == LOOP_ONE) {
+            // In LOOP_ONE mode, play the same song again.
+            playMusic(songList.get(currentSong));
+            return;
+        } else if (loopMode == LOOP_ALL) {
+            if (isShuffleMode) {
+                if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
+                    currentSong = (currentSong + 1) % shuffledSongList.size();
+                    playMusic(shuffledSongList.get(currentSong));
+                    return;
+                }
+            } else {
+                currentSong = (currentSong + 1) % totalSong;
             }
         } else {
-            if (currentSong < totalSong - 1) {
-                currentSong++;
+            if (isShuffleMode) {
+                if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
+                    currentSong = (currentSong + 1) % shuffledSongList.size();
+                    playMusic(shuffledSongList.get(currentSong));
+                    return;
+                }
             } else {
-                if (loopMode == LOOP_ONE) {
-                    currentSong = (currentSong) % totalSong;
-                } else if (loopMode == LOOP_ALL) {
-                    currentSong = 0;
+                if (currentSong < totalSong - 1) {
+                    currentSong++;
                 } else {
                     stopMusic();
                     return;
                 }
             }
-            playMusic(songList.get(currentSong));
         }
+        playMusic(songList.get(currentSong));
     }
 
     public void playPreviousTrack() {
-        Log.d(TAG, "PREV TRACK");
-        if (isShuffleMode) {
-            if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
-                currentSong = (currentSong - 1 + shuffledSongList.size()) % shuffledSongList.size();
-                playMusic(shuffledSongList.get(currentSong));
+        if (loopMode == LOOP_ONE) {
+            // In LOOP_ONE mode, play the same song again.
+            playMusic(songList.get(currentSong));
+            return;
+        } else if (loopMode == LOOP_ALL) {
+            if (isShuffleMode) {
+                if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
+                    currentSong = (currentSong - 1 + shuffledSongList.size()) % shuffledSongList.size();
+                    playMusic(shuffledSongList.get(currentSong));
+                    return;
+                }
+            } else {
+                currentSong = (currentSong - 1 + totalSong) % totalSong;
             }
         } else {
-            if (currentSong > 0) {
-                currentSong--;
+            if (isShuffleMode) {
+                if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
+                    currentSong = (currentSong - 1 + shuffledSongList.size()) % shuffledSongList.size();
+                    playMusic(shuffledSongList.get(currentSong));
+                    return;
+                }
             } else {
-                if (loopMode == LOOP_ONE) {
-                    currentSong = (currentSong + totalSong - 1) % totalSong;
-                } else if (loopMode == LOOP_ALL) {
-                    currentSong = totalSong - 1;
+                if (currentSong > 0) {
+                    currentSong--;
                 } else {
                     stopMusic();
                     return;
                 }
             }
-            playMusic(songList.get(currentSong));
         }
+        playMusic(songList.get(currentSong));
     }
+
 
     public void stopMusic() {
         Log.d(TAG, "STOP");
@@ -269,5 +294,6 @@ public class MusicService extends Service {
 
     public void toggleLoopMode() {
         loopMode = (loopMode + 1) % 3; // Cycle through LOOP_NONE, LOOP_ONE, LOOP_ALL
+        Log.d(TAG, "LOOP MODE IS: " + loopMode);
     }
 }

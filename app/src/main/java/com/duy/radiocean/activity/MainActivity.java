@@ -9,15 +9,11 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -29,7 +25,6 @@ import com.duy.radiocean.fragment.ProfileFragment;
 import com.duy.radiocean.fragment.SearchFragment;
 import com.duy.radiocean.model.Song;
 import com.duy.radiocean.service.MusicService;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -43,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
     private ImageButton btnPlay;
     private TextView tvTitleSongPlaying, tvArtisSongPlaying;
     private CircleImageView imgSongPlaying;
-    private FrameLayout frameLayoutNoSong, frameLayoutWithSong;
     private boolean isPlaying = false;
     private Song songPlaying = new Song();
     @Override
@@ -51,12 +45,10 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         // Khởi tạo nowPlayingFragment và hiển thị nó trong now_playing_container
         getSupportFragmentManager().beginTransaction().commit();
 
         replaceFragment(new HomeFragment());
-
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.home) {
@@ -82,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         initWidgets();
         setButtonClickListeners();
         loadPlayingSongFromService();
+        checkMusicPlaybackStatus();
     }
 
 
@@ -98,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         tvTitleSongPlaying = findViewById(R.id.txtNameSongPlaying);
         tvArtisSongPlaying = findViewById(R.id.txtSingerPlaying);
         imgSongPlaying = findViewById(R.id.imgSongPlaying);
-//        frameLayoutNoSong = findViewById(R.id.now_playing_container_replace);
-        frameLayoutWithSong = findViewById(R.id.now_playing_container);
         checkMusicPlaybackStatus();
     }
     private void setButtonClickListeners() {
@@ -136,13 +127,8 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
     }
 
     private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
-        if (isPlaying) {
-            btnPlay.setBackgroundResource(R.drawable.pause);
-            animationControl(isPlaying);
-        } else {
-            btnPlay.setBackgroundResource(R.drawable.play);
-            animationControl(isPlaying);
-        }
+        btnPlay.setBackgroundResource(isPlaying ? R.drawable.pause : R.drawable.play);
+        animationControl(isPlaying);
     }
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -183,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
             tvTitleSongPlaying.setText(songPlaying.getTitle());
             tvArtisSongPlaying.setText(songPlaying.getArtist());
             isPlaying = true;
-            updatePlayPauseButtonsVisibility(isPlaying);
             animationControl(isPlaying);
         }
     }
@@ -210,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         if (newSong != null) {
             songPlaying = newSong;
             setValueForWidgets();
+            updatePlayPauseButtonsVisibility(isPlaying);
             Log.d("MainActivity here", "CurrentSong is " + newSong.getTitle());
         }
     }
