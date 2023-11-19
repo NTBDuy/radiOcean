@@ -32,7 +32,7 @@ public class ProfileFragment extends Fragment implements MusicService.OnSongChan
     FirebaseAuth auth;
     FirebaseUser user;
     Button btnLogout;
-    private TextView name, email;
+    private TextView name, email, avatar;
     ArrayList<Profile> listProfile = new ArrayList<>();
 
     public ProfileFragment() {}
@@ -57,6 +57,7 @@ public class ProfileFragment extends Fragment implements MusicService.OnSongChan
         });
         name = view.findViewById(R.id.name);
         email = view.findViewById(R.id.email);
+        avatar = view.findViewById(R.id.Profile_avatar);
         try{
             getdata();
         } catch(Exception e){
@@ -96,6 +97,7 @@ public class ProfileFragment extends Fragment implements MusicService.OnSongChan
                         if(profile.getEmail().equals(user.getEmail())){
                             name.setText(profile.getName());
                             email.setText(profile.getEmail());
+                            avatar.setText(String.valueOf(profile.getName().charAt(0)));
                         }
                     }
                 }
