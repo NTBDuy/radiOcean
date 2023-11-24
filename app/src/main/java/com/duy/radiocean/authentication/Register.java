@@ -34,7 +34,7 @@ public class Register extends AppCompatActivity {
     FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     ArrayList<Profile> listProfile = new ArrayList<>();
-    int idIdentity = 0;
+    int idIdentity=0;
 
     @Override
     public void onStart() {
@@ -47,45 +47,15 @@ public class Register extends AppCompatActivity {
             finish();
         }
     }
-    private void loadSomething() {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference ref = db.getReference("Profiles");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    listProfile.clear();
-                    for (DataSnapshot profileSnapshot : snapshot.getChildren()) {
-                        Profile prof = profileSnapshot.getValue(Profile.class);
-                        listProfile.add(prof);
-                    }
-                    idIdentity = listProfile.size();
 
-
-                }
-//                System.out.println("do dai cua listProfile.size(): "+ listProfile.size());
-//                System.out.println("do dai cua idIdentity: "+ idIdentity);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
     public void writeNewUser(){
-        loadSomething();
+        String primaryEmailKey = emailEdt.getText().toString();
+        primaryEmailKey = primaryEmailKey.replaceAll("[^a-zA-Z0-9]", "");
 
-        int temp = idIdentity++;
-        String newId = String.valueOf(temp);
-
-        Profile profile = new Profile(newId, emailEdt.getText().toString(),
+        Profile profile = new Profile(emailEdt.getText().toString(),
                 nameEdt.getText().toString(),
                 genderEdt.getText().toString());
-        mDatabase.child("Profiles").child(newId).setValue(profile);
-    }
-    public void sendData(){
-        writeNewUser();
+        mDatabase.child("Profiles").child(primaryEmailKey).setValue(profile);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +100,7 @@ public class Register extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     try{
-                                        sendData();
+                                        writeNewUser();
                                     }catch(Exception e){
                                         System.out.println("ERROR: "+ e.getMessage());
                                     }
