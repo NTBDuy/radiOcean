@@ -41,7 +41,7 @@ public class ListAlbumAdapter extends RecyclerView.Adapter<ListAlbumAdapter.View
     public int getItemCount() {
         return items.size();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView img;
         TextView name;
         public ViewHolder(View inflate, RecyclerViewInterface recyclerViewInterface) {
@@ -50,18 +50,15 @@ public class ListAlbumAdapter extends RecyclerView.Adapter<ListAlbumAdapter.View
             name = inflate.findViewById(R.id.txtNameAlbum);
             img = inflate.findViewById(R.id.imgAlbum);
 
-            inflate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (recyclerViewInterface != null) {
-                        int pos = getAdapterPosition();
+            inflate.setOnClickListener(v -> {
+                if (recyclerViewInterface != null) {
+                    int pos = getAdapterPosition();
 
-                        if (pos != RecyclerView.NO_POSITION) {
-                            recyclerViewInterface.onAlbumClick(pos);
-                        }
+                    if (pos != RecyclerView.NO_POSITION) {
+                        recyclerViewInterface.onAlbumClick(pos);
                     }
-
                 }
+
             });
         }
     }

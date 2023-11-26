@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -28,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
 public class ProfileFragment extends Fragment implements MusicService.OnSongChangedListener{
     FirebaseAuth auth;
     FirebaseUser user;
@@ -46,14 +47,11 @@ public class ProfileFragment extends Fragment implements MusicService.OnSongChan
         btnLogout = view.findViewById(R.id.btnLogout);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(v.getContext(), LogIn.class);
-                startActivity(intent);
-                System.out.println("successful");
-            }
+        btnLogout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(v.getContext(), LogIn.class);
+            startActivity(intent);
+            System.out.println("successful");
         });
         name = view.findViewById(R.id.name);
         email = view.findViewById(R.id.email);
@@ -67,7 +65,7 @@ public class ProfileFragment extends Fragment implements MusicService.OnSongChan
     }
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

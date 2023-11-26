@@ -1,5 +1,6 @@
 package com.duy.radiocean.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         this.recyclerViewInterface = recyclerViewInterface;
         this.modelSongArraylist = songModelArrayList;
     }
+    @SuppressLint("NotifyDataSetChanged")
     public void filterList(ArrayList<Song> filterlist) {
         modelSongArraylist = filterlist;
         notifyDataSetChanged();
@@ -48,15 +50,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         TextView artist;
         public ViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (recyclerViewInterface != null) {
-                        int pos = getAdapterPosition();
+            itemView.setOnClickListener(v -> {
+                if (recyclerViewInterface != null) {
+                    int pos = getAdapterPosition();
 
-                        if (pos != RecyclerView.NO_POSITION) {
-                            recyclerViewInterface.onItemClick(pos);
-                        }
+                    if (pos != RecyclerView.NO_POSITION) {
+                        recyclerViewInterface.onItemClick(pos);
                     }
                 }
             });

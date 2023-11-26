@@ -180,7 +180,6 @@
                         android:layout_toStartOf="@+id/btnPlayFromMusicNew"
                         android:background="@null"
                         android:importantForAccessibility="no"
-                        android:rotation="180"
                         android:src="@drawable/backward" />
 
 

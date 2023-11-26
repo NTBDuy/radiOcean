@@ -9,13 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -24,20 +21,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.duy.radiocean.R;
 import com.duy.radiocean.RecyclerViewInterface;
-import com.duy.radiocean.activity.MainActivity;
 import com.duy.radiocean.adapter.SongAdapter;
 import com.duy.radiocean.model.Song;
 import com.duy.radiocean.service.MusicService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SearchFragment extends Fragment implements RecyclerViewInterface, ServiceConnection {
-    private RecyclerView songRV;
     private SongAdapter adapter;
     private ArrayList<Song> lstSong, tempLst;
     private MusicService musicService;
@@ -48,15 +43,15 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface, S
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         // Bind to the MusicService
-        getActivity().bindService(new Intent(getActivity(), MusicService.class), this, Context.BIND_AUTO_CREATE);
+        requireActivity().bindService(new Intent(getActivity(), MusicService.class), this, Context.BIND_AUTO_CREATE);
     }
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
     }
     public void onStop() {
         super.onStop();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
     }
 
 
@@ -66,7 +61,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface, S
 
         // Unbind from the MusicService when the fragment is destroyed
         if (isServiceBound) {
-            getActivity().unbindService(this);
+            requireActivity().unbindService(this);
             isServiceBound = false;
         }
     }
@@ -74,7 +69,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface, S
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        songRV = view.findViewById(R.id.idRVSongs);
+        RecyclerView songRV = view.findViewById(R.id.idRVSongs);
         getDataFromDatabase();
         songRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
         adapter = new SongAdapter(getActivity(), lstSong, this);
@@ -85,22 +80,24 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface, S
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filter(newText);
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    filter(newText);
+                    return false;
+                }
+            });
+        }
 
         super.onCreateOptionsMenu(menu, inflater);
     }

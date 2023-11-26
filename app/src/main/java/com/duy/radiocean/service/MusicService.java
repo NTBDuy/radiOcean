@@ -1,14 +1,29 @@
 package com.duy.radiocean.service;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
+
+import com.duy.radiocean.R;
+import com.duy.radiocean.activity.MusicActivity;
 import com.duy.radiocean.model.Song;
+import com.duy.radiocean.notification.MusicNotification;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +33,8 @@ public class MusicService extends Service {
     private final IBinder mBinder = new LocalBinder();
     private MediaPlayer mediaPlayer;
     private Song songPlaying;
-    private boolean isPlaying = false;
+    NotificationCompat.Builder notificationBuilder;
+    NotificationManager notificationManager;
     private int currentSong = 0, totalSong = 0, playbackPosition = 0;
     private ArrayList<Song> songList;
     private ArrayList<Song> shuffledSongList;
@@ -61,7 +77,6 @@ public class MusicService extends Service {
         super.onCreate();
         mediaPlayer = new MediaPlayer();
         songPlaying = new Song();
-
         mediaPlayer.setOnCompletionListener(mediaPlayer -> playNextTrack());
     }
 
@@ -91,7 +106,9 @@ public class MusicService extends Service {
                     break;
                 case "LOAD_DATA":
                     songList = (ArrayList<Song>) intent.getSerializableExtra("SONG_LIST");
-                    totalSong = songList.size();
+                    if (songList != null) {
+                        totalSong = songList.size();
+                    }
                     break;
                 case "NEXT":
                     playNextTrack();
@@ -110,13 +127,82 @@ public class MusicService extends Service {
         return START_STICKY;
     }
 
+    @SuppressLint("ResourceAsColor")
+    private void updateNotiofication() {
+        Bitmap bitmap = BitmapFactory.decodeFile(songPlaying.getImgSong());
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        // Create an Intent for the activity you want to start.
+        Intent resultIntent = new Intent(this, MusicActivity.class);
+// Create the TaskStackBuilder and add the intent, which inflates the back
+// stack.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+// Get the PendingIntent containing the entire back stack.
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(1,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+//        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.layout_notification);
+//        notificationLayout.setTextViewText(R.id.TvNotificationTitle, songPlaying.getTitle());
+//        notificationLayout.setTextViewText(R.id.TvNotificationArtist, songPlaying.getArtist());
+//
+//        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.layout_notification_expanded);
+//        notificationLayoutExpanded.setTextViewText(R.id.TvNotificationTitleExpanded, songPlaying.getTitle());
+//        notificationLayoutExpanded.setTextViewText(R.id.TvNotificationArtistExpanded, songPlaying.getArtist());
+
+        notificationBuilder = new NotificationCompat.Builder(this, MusicNotification.ChannelId)
+//                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setSubText("now playing")
+                .setSmallIcon(R.drawable.music)
+                .setSound(uri)
+                .setAutoCancel(true)
+                .setContentTitle(songPlaying.getTitle())
+                .setContentText(songPlaying.getArtist())
+                .setLargeIcon(bitmap)
+//                .setCustomContentView(notificationLayout)
+//                .setCustomBigContentView(notificationLayoutExpanded)
+                .setContentIntent(resultPendingIntent)
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(1)
+                );
+
+        if (mediaPlayer.isPlaying()) {
+            notificationBuilder.addAction(R.drawable.backward, "prev", null)
+                    .addAction(R.drawable.play, "pause", null)
+                    .addAction(R.drawable.forward, "next", null);
+        } else {
+            notificationBuilder.addAction(R.drawable.backward, "prev", null)
+                    .addAction(R.drawable.pause, "pause", null)
+                    .addAction(R.drawable.forward, "next", null);
+        }
+
+        Notification notification = notificationBuilder.build();
+
+        sendNotification(notification);
+    }
+
+    private void sendNotification(Notification notification) {
+
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            Log.e(TAG, "success");
+            notificationManager.notify(1,notification);
+        }
+    }
+
+
     public boolean isPlaying() {
         return mediaPlayer != null && mediaPlayer.isPlaying();
     }
 
-    public boolean isShuffle() { return isShuffleMode; }
+    public boolean isShuffle() {
+        return isShuffleMode;
+    }
 
-    public int isLoop() { return loopMode; }
+    public int isLoop() {
+        return loopMode;
+    }
 
     public void playMusic(Song song) {
         Log.d(TAG, "PLAY");
@@ -128,7 +214,6 @@ public class MusicService extends Service {
                 songPlaying = song;
                 notifySongChanged(song);
                 mediaPlayer.start();
-                isPlaying = true;
             } catch (IOException e) {
                 Log.e(TAG, "Error while playing music: " + e.getMessage());
             }
@@ -158,7 +243,6 @@ public class MusicService extends Service {
             mediaPlayer.pause();
             playbackPosition = mediaPlayer.getCurrentPosition();
         }
-        isPlaying = false;
     }
 
     public void playNextTrack() {
@@ -236,12 +320,12 @@ public class MusicService extends Service {
             mediaPlayer.reset();
         }
         playbackPosition = 0;
-        isPlaying = false;
     }
 
     private void notifySongChanged(Song newSong) {
         if (songChangedListener != null) {
             songChangedListener.onSongChanged(newSong);
+            updateNotiofication();
         }
     }
 

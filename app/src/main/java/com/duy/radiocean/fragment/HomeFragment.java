@@ -6,11 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -35,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class HomeFragment extends Fragment implements RecyclerViewInterface, MusicService.OnSongChangedListener {
@@ -57,7 +56,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
     }
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
     }
     @Override
     public void onViewCreated(@NonNull View view,
@@ -85,14 +84,14 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
                 Set<String> uniqueAlbums = new HashSet<>(); // Sử dụng một tập hợp để theo dõi album không trùng lặp
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Song song = snapshot.getValue(Song.class);
-                    if (uniqueAlbums.add(song.getAlbum())) { // Kiểm tra xem album đã được thêm chưa
+                    if (song != null && uniqueAlbums.add(song.getAlbum())) { // Kiểm tra xem album đã được thêm chưa
                         Album album = new Album();
                         album.setAlbum(song.getAlbum());
                         album.setImgAlbum(song.getImgAlbum());
                         lstAlbum.add(album); // Thêm album vào danh sách album
                         Log.d("ALBUM ITEM", album.getAlbum());
                     }
-                    if (song.getTopTrendy()) lstSong.add(song);
+                    if (song != null && song.getTopTrendy()) lstSong.add(song);
                 }
                 songAdapter = new ListSongAdapter(getActivity(), lstSong, HomeFragment.this);
                 rvSong.setAdapter(songAdapter);
@@ -109,7 +108,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
     public void onItemClick(int position) {
         Intent resetIntent = new Intent(getActivity(), MusicService.class);
         resetIntent.setAction("RESET");
-        getActivity().startService(resetIntent);
+        requireActivity().startService(resetIntent);
         putDataToService(lstSong);
         requireActivity().startService(createPlayIntent(position));
     }

@@ -45,7 +45,7 @@ public class ListSongAdapter extends RecyclerView.Adapter<ListSongAdapter.ViewHo
     }
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView id, title, artist, time;
+        TextView title, artist, time;
         ImageView img;
 
         public ViewHolder(View inflate, RecyclerViewInterface recyclerViewInterface) {
@@ -56,15 +56,12 @@ public class ListSongAdapter extends RecyclerView.Adapter<ListSongAdapter.ViewHo
             time = inflate.findViewById(R.id.txtTime);
             img = inflate.findViewById(R.id.imgSong);
 
-            inflate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (recyclerViewInterface != null) {
-                        int pos = getAdapterPosition();
+            inflate.setOnClickListener(v -> {
+                if (recyclerViewInterface != null) {
+                    int pos = getAdapterPosition();
 
-                        if (pos != RecyclerView.NO_POSITION) {
-                            recyclerViewInterface.onItemClick(pos);
-                        }
+                    if (pos != RecyclerView.NO_POSITION) {
+                        recyclerViewInterface.onItemClick(pos);
                     }
                 }
             });

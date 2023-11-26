@@ -7,14 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -64,7 +62,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
     }
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
     }
 
     @Override
@@ -89,16 +87,14 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
     }
 
     private void setButtonClickListeners() {
-        btnBack.setOnClickListener(v -> {
-            replaceFragment(new HomeFragment());
-        });
+        btnBack.setOnClickListener(v -> replaceFragment(new HomeFragment()));
         btnPlayInAlbum.setOnClickListener(v -> {
             if (!isPlaying) {
                 // Create an Intent for the "PAUSE" action
                 Intent resetIntent = new Intent(getActivity(), MusicService.class);
                 resetIntent.setAction("RESET");
                 // Send the pauseIntent to the MusicService
-                getActivity().startService(resetIntent);
+                requireActivity().startService(resetIntent);
                 putDataToService(lstSongInAlbum);
                 requireActivity().startService(createPlayIntent(0));
                 isPlaying = true;
@@ -109,7 +105,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
                 Intent pauseIntent = new Intent(getActivity(), MusicService.class);
                 pauseIntent.setAction("PAUSE");
                 // Send the pauseIntent to the MusicService
-                getActivity().startService(pauseIntent);
+                requireActivity().startService(pauseIntent);
                 // Update the UI to reflect the pause action
                 updatePlayPauseButtonsVisibility(false);
 
@@ -134,7 +130,8 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
                 lstSongInAlbum.clear(); // Xóa dữ liệu cũ (nếu có) trong ArrayList
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Song song = snapshot.getValue(Song.class);
-                    if (Objects.equals(song.getAlbum(), album.getAlbum())) lstSongInAlbum.add(song);
+                    if (song != null && Objects.equals(song.getAlbum(), album.getAlbum()))
+                        lstSongInAlbum.add(song);
                 }
                 songAdapter = new ListSongAdapter(getActivity(), lstSongInAlbum, AlbumFragment.this);
                 rvSong.setAdapter(songAdapter);
@@ -155,7 +152,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
         putDataToService(lstSongInAlbum);
         Intent resetIntent = new Intent(getActivity(), MusicService.class);
         resetIntent.setAction("RESET");
-        getActivity().startService(resetIntent);
+        requireActivity().startService(resetIntent);
         requireActivity().startService(createPlayIntent(position));
         updatePlayPauseButtonsVisibility(true);
     }

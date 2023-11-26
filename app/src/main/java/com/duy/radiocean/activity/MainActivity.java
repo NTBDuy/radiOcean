@@ -7,7 +7,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -62,13 +61,10 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         });
 
         relativeLayout = findViewById(R.id.layoutPlaying);
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MusicActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        relativeLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), MusicActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         initWidgets();
@@ -140,10 +136,10 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                MusicService.LocalBinder binder = (MusicService.LocalBinder) service;
-                musicService = binder.getService();
-                isBound = true;
-                musicService.setOnSongChangedListener(MainActivity.this);
+                    MusicService.LocalBinder binder = (MusicService.LocalBinder) service;
+                    musicService = binder.getService();
+                    isBound = true;
+                    musicService.setOnSongChangedListener(MainActivity.this);
 
                 // Check if music is currently playing and set the play/pause button accordingly
                 checkMusicPlaybackStatus();
