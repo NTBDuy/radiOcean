@@ -1,6 +1,7 @@
 package com.duy.radiocean.activity;
 
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.duy.radiocean.R;
 import com.duy.radiocean.model.Song;
 import com.duy.radiocean.service.MusicService;
+import com.duy.radiocean.service.Reciever;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -32,11 +34,13 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
     private MusicService musicService;
     private boolean isBound = false;
     private ServiceConnection serviceConnection;
-    private ImageButton btnBackFromMusicAct, btnPlay, btnSuff, btnLoop, btnNext, btnPrev;
+    private ImageButton btnBackFromMusicAct, btnPlay, btnShuff, btnLoop, btnNext, btnPrev;
     private CircleImageView imgSong, imgDisk;
     private TextView tvTitle, tvArtist, tvAlbum, tvCurTime, tvTotalTime;
     private SeekBar seekBar;
     private Song songPlaying = new Song();
+
+
 
     private final BroadcastReceiver seekBarReceiver = new BroadcastReceiver() {
         @Override
@@ -44,7 +48,6 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             if (Objects.equals(intent.getAction(), "UPDATE_SEEK_BAR")) {
                 int currentPosition = intent.getIntExtra("CURRENT_POSITION", 0);
                 updateSeekBarPosition(currentPosition);
-                updatePlayPauseButtonsVisibility(musicService.isPlaying());
             }
         }
     };
@@ -65,7 +68,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
 //        btnPause = findViewById(R.id.btnPauseFromMusicActi);
         btnNext = findViewById(R.id.btnNextFromMusicNew);
         btnPrev = findViewById(R.id.btnPreviousFromMusicNew);
-        btnSuff = findViewById(R.id.btnShuffle);
+        btnShuff = findViewById(R.id.btnShuffle);
         btnLoop = findViewById(R.id.btnLoop);
         imgSong = findViewById(R.id.imgSongPlayingFromMusicNew);
         imgDisk = findViewById(R.id.imgDiskSongPlayingFromMusicNew);
@@ -76,6 +79,8 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         tvTotalTime = findViewById(R.id.tvTimeTotalNew);
         seekBar = findViewById(R.id.seekBarNew);
     }
+
+
     private void setClickFunc() {
         btnBackFromMusicAct.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -85,36 +90,44 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
 
 
         btnPlay.setOnClickListener(v -> {
-            if (musicService.isPlaying()) {
-                musicService.pauseMusic();
-                updatePlayPauseButtonsVisibility(false);
-            } else {
-                musicService.continueMusic();
-                updatePlayPauseButtonsVisibility(true);
+            if(musicService!=null){
+                if ( musicService.isPlaying()) {
+                    musicService.pauseMusic();
+                    updatePlayPauseButtonsVisibility(musicService.isPlaying());
+                } else {
+                    musicService.continueMusic();
+                    updatePlayPauseButtonsVisibility(musicService.isPlaying());
+                }
             }
         });
 
-        btnSuff.setOnClickListener(v -> {
-            musicService.toggleShuffleMode();
-            // Update the UI to reflect the shuffle mode status
-
-            updateShuffleButtonUI(musicService.isShuffle());
+        btnShuff.setOnClickListener(v -> {
+//            if(musicService!=null){
+//
+//            }
+//            updateShuffleButtonUI(musicService.isShuffle());
         });
 
         btnLoop.setOnClickListener(v -> {
-            musicService.toggleLoopMode();
-            // Update the UI to reflect the loop mode status
-            updateLoopButtonUI(musicService.isLoop());
+//           if(musicService!=null){
+//
+//           }
+//            // Update the UI to reflect the loop mode status
+//            updateLoopButtonUI(musicService.isLoop());
         });
 
         btnNext.setOnClickListener(v -> {
-            musicService.playNextTrack();
-            updatePlayPauseButtonsVisibility(true);
+//            if(musicService!=null){
+//                musicService.playNextTrack();
+//            }
+//            updatePlayPauseButtonsVisibility(musicService.isPlaying());
         });
 
         btnPrev.setOnClickListener(v -> {
-            musicService.playPreviousTrack();
-            updatePlayPauseButtonsVisibility(true);
+//           if(musicService!=null){
+//               musicService.playPreviousTrack();
+//           }
+//            updatePlayPauseButtonsVisibility(musicService.isPlaying());
         });
 
         // Set up the seek bar change listener
@@ -135,7 +148,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         });
     }
     private void updateShuffleButtonUI(boolean isShuffle) {
-        btnSuff.setBackgroundResource(isShuffle ? R.drawable.shuffle_on : R.drawable.shuffle);
+        btnShuff.setBackgroundResource(isShuffle ? R.drawable.shuffle_on : R.drawable.shuffle);
     }
 
     private void updateLoopButtonUI(int isLoop) {
@@ -177,7 +190,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
                 btnPlay.setOnClickListener(v -> Toast.makeText(v.getContext(),"Nothing to play!", Toast.LENGTH_SHORT).show());
                 btnNext.setOnClickListener(v -> Toast.makeText(v.getContext(),"Nothing to next!", Toast.LENGTH_SHORT).show());
                 btnPrev.setOnClickListener(v -> Toast.makeText(v.getContext(),"Nothing to prev!", Toast.LENGTH_SHORT).show());
-                btnSuff.setOnClickListener(v -> Toast.makeText(v.getContext(),"Please choose song to play!", Toast.LENGTH_SHORT).show());
+                btnShuff.setOnClickListener(v -> Toast.makeText(v.getContext(),"Please choose song to play!", Toast.LENGTH_SHORT).show());
                 btnLoop.setOnClickListener(v -> Toast.makeText(v.getContext(),"Please choose song to play!", Toast.LENGTH_SHORT).show());
             } else {
                 Picasso.get().load(songPlaying.getImgSong()).into(imgSong);
@@ -219,7 +232,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
     public void onSongChanged(Song newSong) {
         songPlaying = newSong;
         Log.e("NEXT SONG TEST", "onSongChanged is running!");
-        updatePlayPauseButtonsVisibility(true);
+        updatePlayPauseButtonsVisibility(musicService.isPlaying());
         updateShuffleButtonUI(musicService.isShuffle());
         updateLoopButtonUI(musicService.isLoop());
         setValueForWidgets();

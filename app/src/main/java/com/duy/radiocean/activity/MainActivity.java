@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
     private ImageButton btnPlay;
     private TextView tvTitleSongPlaying, tvArtisSongPlaying;
     private CircleImageView imgSongPlaying;
-    private boolean isPlaying = false;
     private Song songPlaying = new Song();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +76,8 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
     private void checkMusicPlaybackStatus() {
         if (isBound && musicService != null) {
             Log.d("MainActivity My Test", "checkMusicPlaybackStatus() is running");
-            boolean isPlaying = musicService.isPlaying();
-            updatePlayPauseButtonsVisibility(isPlaying);
-            animationControl(isPlaying);
+            updatePlayPauseButtonsVisibility(musicService.isPlaying());
+            animationControl(musicService.isPlaying());
         }
     }
     private void initWidgets() {
@@ -91,17 +89,13 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
     }
     private void setButtonClickListeners() {
         btnPlay.setOnClickListener(v -> {
-            if(!isPlaying){
+            if(!musicService.isPlaying()){
                 musicService.continueMusic();
-                isPlaying = true;
-                animationControl(true);
-                updatePlayPauseButtonsVisibility(true);
             }else{
                 musicService.pauseMusic();
-                isPlaying = false;
-                animationControl(false);
-                updatePlayPauseButtonsVisibility(false);
             }
+            animationControl(musicService.isPlaying());
+            updatePlayPauseButtonsVisibility(musicService.isPlaying());
         });
 
     }
@@ -164,8 +158,7 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
             Picasso.get().load(songPlaying.getImgSong()).into(imgSongPlaying);
             tvTitleSongPlaying.setText(songPlaying.getTitle());
             tvArtisSongPlaying.setText(songPlaying.getArtist());
-            isPlaying = true;
-            animationControl(isPlaying);
+            animationControl(musicService.isPlaying());
         }
     }
     @Override
@@ -191,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         if (newSong != null) {
             songPlaying = newSong;
             setValueForWidgets();
-            updatePlayPauseButtonsVisibility(isPlaying);
+            updatePlayPauseButtonsVisibility(musicService.isPlaying());
             Log.d("MainActivity here", "CurrentSong is " + newSong.getTitle());
         }
     }

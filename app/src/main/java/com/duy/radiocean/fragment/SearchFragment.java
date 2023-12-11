@@ -37,6 +37,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface, S
     private ArrayList<Song> lstSong, tempLst;
     private MusicService musicService;
     private boolean isServiceBound = false;
+    ArrayList<Song> filteredList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,7 +104,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface, S
     }
 
     private void filter(String text) {
-        ArrayList<Song> filteredList = new ArrayList<>();
+        filteredList = new ArrayList<>();
         tempLst = filteredList;
         for (Song item : lstSong) {
             if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
@@ -133,8 +134,13 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface, S
     @Override
     public void onItemClick(int position) {
         if (isServiceBound) {
+            Log.e(null, "onItemClick: true" );
             Song selectedSong = tempLst.get(position);
-            musicService.playMusic(selectedSong);
+            Intent putIntent = new Intent(getContext(), MusicService.class);
+            putIntent.putParcelableArrayListExtra("listSongClicked",filteredList);
+            putIntent.putExtra("songClicked",selectedSong);
+            putIntent.putExtra("action_music_service",2);
+            requireActivity().startService(putIntent);
         } else {
             Log.e("SearchFragment", "MusicService is not bound");
         }

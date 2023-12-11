@@ -20,7 +20,7 @@
             android:layout_marginStart="10dp"
             android:importantForAccessibility="no"
             android:layout_marginTop="30dp"
-            android:src="@drawable/back" />
+            android:background="@drawable/back" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -72,22 +72,11 @@
             android:id="@+id/txtTitlePopular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/btnPlayInAlbum"
             android:layout_marginStart="25dp"
             android:fontFamily="@font/gothamfont_21016"
             android:text="List song"
             android:textColor="@color/black"
             android:textSize="21sp" />
-
-        <ImageButton
-            android:id="@+id/btnPlayInAlbum"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/play"
-            android:importantForAccessibility="no" />
 
         <LinearLayout
             android:layout_width="match_parent"

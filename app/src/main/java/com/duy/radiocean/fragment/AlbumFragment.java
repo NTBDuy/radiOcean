@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.RenderEffect;
 import android.graphics.Shader;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,15 +41,13 @@ import java.util.Objects;
 
 public class AlbumFragment extends Fragment implements RecyclerViewInterface, MusicService.OnSongChangedListener {
     private ImageView btnBack, imgAlbum1, imgAlbum2;
-    private ImageButton btnPlayInAlbum;
     private SharedViewModel sharedViewModel;
     private Album album;
     private TextView txtNameAlbum;
     private RecyclerView rvSong;
     private ListSongAdapter songAdapter;
-    private boolean isPlaying = false;
     private final ArrayList<Song> lstSongInAlbum = new ArrayList<>();
-
+    private static final int ACTION_PLAY = 2;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +79,6 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
         btnBack = requireActivity().findViewById(R.id.btnBackFromAlbum);
         imgAlbum1 = requireActivity().findViewById(R.id.imgAlbum1);
         imgAlbum2 = requireActivity().findViewById(R.id.imgAlbum2);
-        btnPlayInAlbum = requireActivity().findViewById(R.id.btnPlayInAlbum);
         txtNameAlbum = requireActivity().findViewById(R.id.TxtNamePlaylist);
         rvSong = requireActivity().findViewById(R.id.rvListSongFromAlbum);
         imgAlbum2.setRenderEffect(RenderEffect.createBlurEffect(50, 50, Shader.TileMode.MIRROR));
@@ -88,30 +86,8 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
 
     private void setButtonClickListeners() {
         btnBack.setOnClickListener(v -> replaceFragment(new HomeFragment()));
-        btnPlayInAlbum.setOnClickListener(v -> {
-            if (!isPlaying) {
-                // Create an Intent for the "PAUSE" action
-                Intent resetIntent = new Intent(getActivity(), MusicService.class);
-                resetIntent.setAction("RESET");
-                // Send the pauseIntent to the MusicService
-                requireActivity().startService(resetIntent);
-                putDataToService(lstSongInAlbum);
-                requireActivity().startService(createPlayIntent(0));
-                isPlaying = true;
-                updatePlayPauseButtonsVisibility(true);
-            } else {
-                isPlaying = false;
-                // Create an Intent for the "PAUSE" action
-                Intent pauseIntent = new Intent(getActivity(), MusicService.class);
-                pauseIntent.setAction("PAUSE");
-                // Send the pauseIntent to the MusicService
-                requireActivity().startService(pauseIntent);
-                // Update the UI to reflect the pause action
-                updatePlayPauseButtonsVisibility(false);
-
-            }
-        });
     }
+
 
     private void setDataForWidgets() {
         txtNameAlbum.setText(album.getAlbum());
@@ -149,33 +125,13 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
 
     @Override
     public void onItemClick(int position) {
-        putDataToService(lstSongInAlbum);
-        Intent resetIntent = new Intent(getActivity(), MusicService.class);
-        resetIntent.setAction("RESET");
-        requireActivity().startService(resetIntent);
-        requireActivity().startService(createPlayIntent(position));
-        updatePlayPauseButtonsVisibility(true);
-    }
-
-    private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
-        if (isPlaying) {
-            btnPlayInAlbum.setBackgroundResource(R.drawable.pause);
-        } else {
-            btnPlayInAlbum.setBackgroundResource(R.drawable.play);
-        }
+        putDataToService(lstSongInAlbum,position);
     }
 
     @Override
     public void onSongChanged(Song newSong) {
     }
 
-    private Intent createPlayIntent(int position) {
-        Intent playIntent = new Intent(getActivity(), MusicService.class);
-        playIntent.setAction("PLAY");
-        playIntent.putExtra("POSITION", position);
-        playIntent.putExtra("SONG_INFO", lstSongInAlbum.get(position));
-        return playIntent;
-    }
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -184,10 +140,13 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
         fragmentTransaction.commit();
     }
 
-    private void putDataToService(ArrayList<Song> songList) {
+    private void putDataToService(ArrayList<Song> songList, int position) {
         Intent putIntent = new Intent(getActivity(), MusicService.class);
-        putIntent.putExtra("SONG_LIST", songList);
-        requireActivity().startService(putIntent.setAction("LOAD_DATA"));
+        putIntent.putExtra("songPos",position);
+        putIntent.putParcelableArrayListExtra("listSongClicked", songList);
+        putIntent.putExtra("songClicked",songList.get(position));
+        putIntent.putExtra("action_music_service",ACTION_PLAY);
+        requireActivity().startService(putIntent);
     }
 
 }

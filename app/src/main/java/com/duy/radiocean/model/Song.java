@@ -1,8 +1,14 @@
 package com.duy.radiocean.model;
 
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
-public class Song implements Serializable {
+public class Song implements Parcelable {
     private int id;
     private String title;
     private String album;
@@ -15,17 +21,29 @@ public class Song implements Serializable {
 
     public Song() {}
 
-    public Song(int id, String title, String album, String artist, int length, String link, String imgAlbum, String imgSong, Boolean TopTrendy) {
-        this.id = id;
-        this.title = title;
-        this.album = album;
-        this.artist = artist;
-        this.length = length;
-        this.link = link;
-        this.imgAlbum = imgAlbum;
-        this.imgSong = imgSong;
-        this.TopTrendy = TopTrendy;
+    public Song(Parcel in){
+        id = in.readInt();
+        title =in.readString();
+        album = in.readString();
+        artist= in.readString();
+        length=in.readInt();
+        link=in.readString();
+        imgAlbum=in.readString();
+        imgSong=in.readString();
+        TopTrendy=in.readBoolean();
     }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -97,5 +115,25 @@ public class Song implements Serializable {
 
     public void setTopTrendy(Boolean topTrendy) {
         this.TopTrendy = topTrendy;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(album);
+        dest.writeString(artist);
+        dest.writeInt(length);
+        dest.writeString(link);
+        dest.writeString(imgAlbum);
+        dest.writeString(imgSong);
+        dest.writeBoolean(TopTrendy);
+
     }
 }

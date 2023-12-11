@@ -17,6 +17,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.ImageButton;
 
 import androidx.core.app.NotificationCompat;
 
@@ -27,16 +28,19 @@ import com.duy.radiocean.notification.MusicNotification;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class MusicService extends Service {
+public class MusicServiceNew extends Service {
     private final IBinder mBinder = new LocalBinder();
     private MediaPlayer mediaPlayer;
     private Song songPlaying;
     NotificationCompat.Builder notificationBuilder;
     NotificationManager notificationManager;
-    private int currentSong = 0;
-    private int playbackPosition = 0;
+    private int currentSong = 0, totalSong = 0, playbackPosition = 0;
     private ArrayList<Song> songList;
+    private ArrayList<Song> shuffledSongList;
+    private boolean isShuffleMode = false;
+    private int loopMode = LOOP_NONE; // Added loop mode
     private final String TAG = "SERVICE HERE";
     private final Handler handler = new Handler();
 
@@ -46,9 +50,12 @@ public class MusicService extends Service {
     private static final int ACTION_NEXT = 4;
     private static final int ACTION_STOP = 5;
     private static final int ACTION_RESUME = 6;
-    private boolean isShuffleMode = false;
-    private int isLoopMode = 0;
+    private static final int TOGGLE_SHUFFLE = 7;
+    private static final int TOGGLE_LOOP = 8;
 
+    private static final int LOOP_NONE = 0;
+    private static final int LOOP_ONE = 1;
+    private static final int LOOP_ALL = 2;
 
     private Song selectedSong;
 
@@ -63,8 +70,8 @@ public class MusicService extends Service {
     }
 
     public class LocalBinder extends Binder {
-        public MusicService getService() {
-            return MusicService.this;
+        public MusicServiceNew getService() {
+            return MusicServiceNew.this;
         }
     }
 
@@ -87,17 +94,47 @@ public class MusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        songList = intent.getParcelableArrayListExtra("listSongClicked", Song.class);
-        selectedSong = intent.getParcelableExtra("songClicked", Song.class);
-        currentSong = intent.getIntExtra("songPos", 0);
-        for (Song song : songList) {
-            Log.e(null, "song: " + song.getTitle());
-        }
-        Log.e(null, "songPos: " + currentSong);
-
         int actionMusic = intent.getIntExtra("action_music_service", 0);
-        Log.e(null, "onStartCommand: " + actionMusic);
         handleMusic(actionMusic);
+        String action = intent.getAction();
+        if (action != null) {
+            switch (action) {
+                case "PLAY":
+                    if (playbackPosition >= 1) {
+                        getPendingIntend(this, ACTION_RESUME);
+                    } else {
+                        selectedSong = (Song) intent.getSerializableExtra("SONG_INFO");
+                        currentSong = intent.getIntExtra("POSITION", 0);
+                        getPendingIntend(this, ACTION_PLAY);
+                    }
+                    startUpdatingSeekBar();
+                    break;
+                case "PAUSE":
+                    getPendingIntend(this, ACTION_PAUSE);
+                    break;
+                case "STOP":
+                    getPendingIntend(this, ACTION_STOP);
+                    break;
+                case "LOAD_DATA":
+                    songList = (ArrayList<Song>) intent.getSerializableExtra("SONG_LIST");
+                    if (songList != null) {
+                        totalSong = songList.size();
+                    }
+                    break;
+                case "NEXT":
+                    getPendingIntend(this, ACTION_NEXT);
+                    break;
+                case "PREVIOUS":
+                    getPendingIntend(this, ACTION_PREV);
+                    break;
+                case "TOGGLE_SHUFFLE":
+                    getPendingIntend(this, TOGGLE_SHUFFLE);
+                    break;
+                case "TOGGLE_LOOP":
+                    getPendingIntend(this, TOGGLE_LOOP);
+                    break;
+            }
+        }
         return START_STICKY;
     }
 
@@ -121,6 +158,12 @@ public class MusicService extends Service {
                 break;
             case ACTION_PREV:
                 playPreviousTrack();
+                break;
+            case TOGGLE_SHUFFLE:
+                toggleShuffleMode();
+                break;
+            case TOGGLE_LOOP:
+                toggleLoopMode();
                 break;
         }
     }
@@ -196,6 +239,18 @@ public class MusicService extends Service {
     }
 
 
+    public boolean isPlaying() {
+        return mediaPlayer != null && mediaPlayer.isPlaying();
+    }
+
+    public boolean isShuffle() {
+        return isShuffleMode;
+    }
+
+    public int isLoop() {
+        return loopMode;
+    }
+
     public void playMusic(Song song) {
         Log.d(TAG, "PLAY");
         if (song != null) {
@@ -222,7 +277,8 @@ public class MusicService extends Service {
             mediaPlayer.seekTo(playbackPosition);
             mediaPlayer.start();
         } else {
-            stopMusic();
+            Log.d(TAG, "Nothing to continue");
+            mediaPlayer.reset();
         }
         updateNotiofication();
 
@@ -238,15 +294,75 @@ public class MusicService extends Service {
     }
 
     public void playNextTrack() {
-
+        if (loopMode == LOOP_ONE) {
+            // In LOOP_ONE mode, play the same song again.
+            playMusic(songList.get(currentSong));
+            return;
+        } else if (loopMode == LOOP_ALL) {
+            if (isShuffleMode) {
+                if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
+                    currentSong = (currentSong + 1) % shuffledSongList.size();
+                    playMusic(shuffledSongList.get(currentSong));
+                    return;
+                }
+            } else {
+                currentSong = (currentSong + 1) % totalSong;
+            }
+        } else {
+            if (isShuffleMode) {
+                if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
+                    currentSong = (currentSong + 1) % shuffledSongList.size();
+                    playMusic(shuffledSongList.get(currentSong));
+                    return;
+                }
+            } else {
+                if (currentSong < totalSong - 1) {
+                    currentSong++;
+                } else {
+                    stopMusic();
+                    return;
+                }
+            }
+        }
+        playMusic(songList.get(currentSong));
     }
 
     public void playPreviousTrack() {
-
+        if (loopMode == LOOP_ONE) {
+            // In LOOP_ONE mode, play the same song again.
+            playMusic(songList.get(currentSong));
+            return;
+        } else if (loopMode == LOOP_ALL) {
+            if (isShuffleMode) {
+                if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
+                    currentSong = (currentSong - 1 + shuffledSongList.size()) % shuffledSongList.size();
+                    playMusic(shuffledSongList.get(currentSong));
+                    return;
+                }
+            } else {
+                currentSong = (currentSong - 1 + totalSong) % totalSong;
+            }
+        } else {
+            if (isShuffleMode) {
+                if (shuffledSongList != null && !shuffledSongList.isEmpty()) {
+                    currentSong = (currentSong - 1 + shuffledSongList.size()) % shuffledSongList.size();
+                    playMusic(shuffledSongList.get(currentSong));
+                    return;
+                }
+            } else {
+                if (currentSong > 0) {
+                    currentSong--;
+                } else {
+                    stopMusic();
+                    return;
+                }
+            }
+        }
+        playMusic(songList.get(currentSong));
     }
 
 
-    private void stopMusic() {
+    public void stopMusic() {
         Log.d(TAG, "STOP");
         if (mediaPlayer != null) {
             mediaPlayer.reset();
@@ -283,20 +399,6 @@ public class MusicService extends Service {
         return timerLabel;
     }
 
-    public boolean isPlaying() {
-        return mediaPlayer.isPlaying();
-
-    }
-
-    public boolean isShuffle() {
-        return isShuffleMode;
-    }
-
-    public int isLoop() {
-        return isLoopMode;
-    }
-
-
     private void startUpdatingSeekBar() {
         handler.postDelayed(new Runnable() {
             @Override
@@ -310,4 +412,19 @@ public class MusicService extends Service {
         }, 1000); // Delayed start to match the update interval.
     }
 
+    public void toggleShuffleMode() {
+        isShuffleMode = !isShuffleMode;
+        if (isShuffleMode) {
+            shuffledSongList = new ArrayList<>(songList);
+            Collections.shuffle(shuffledSongList);
+            currentSong = 0;
+        } else {
+            shuffledSongList = null;
+        }
+    }
+
+    public void toggleLoopMode() {
+        loopMode = (loopMode + 1) % 3; // Cycle through LOOP_NONE, LOOP_ONE, LOOP_ALL
+        Log.d(TAG, "LOOP MODE IS: " + loopMode);
+    }
 }

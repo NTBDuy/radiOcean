@@ -43,6 +43,8 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
     private SharedViewModel sharedViewModel;
     private final ArrayList<Song> lstSong = new ArrayList<>();
     private final ArrayList<Album> lstAlbum = new ArrayList<>();
+
+    private  final int ACTION_PLAY = 2;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,14 +68,11 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
         rvSong.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvAlbum.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
         getDataFromDatabase();
-        setButtonClickListeners();
-
     }
     private void initWidgets() {
         rvSong = requireActivity().findViewById(R.id.recyclerViewListSong);
         rvAlbum = requireActivity().findViewById(R.id.recyclerViewAlbum);
     }
-    private void setButtonClickListeners() {}
     private void getDataFromDatabase() {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference("song");
@@ -106,11 +105,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
     }
     @Override
     public void onItemClick(int position) {
-        Intent resetIntent = new Intent(getActivity(), MusicService.class);
-        resetIntent.setAction("RESET");
-        requireActivity().startService(resetIntent);
-        putDataToService(lstSong);
-        requireActivity().startService(createPlayIntent(position));
+        putDataToService(lstSong, position);
     }
     @Override
     public void onAlbumClick(int position) {
@@ -119,20 +114,24 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
         // Chuyển sang AlbumFragment
         replaceFragment(new AlbumFragment());
     }
-    private Intent createPlayIntent(int position) {
-        Intent playIntent = new Intent(getActivity(), MusicService.class);
-        playIntent.setAction("PLAY");
-        playIntent.putExtra("POSITION", position);
-        playIntent.putExtra("SONG_INFO", lstSong.get(position));
-        return playIntent;
+
+    private void putDataToService(ArrayList<Song> songList, int position) {
+        if(songList!=null){
+            Intent putIntent = new Intent(getActivity(), MusicService.class);
+            putIntent.putExtra("songPos",position);
+            putIntent.putParcelableArrayListExtra("listSongClicked", songList);
+            putIntent.putExtra("songClicked",lstSong.get(position));
+            putIntent.putExtra("action_music_service",ACTION_PLAY);
+            requireActivity().startService(putIntent);
+        }else{
+            Log.e(null, "putDataToService: null" );
+        }
+
     }
+
     @Override
     public void onSongChanged(Song newSong) {}
-    private void putDataToService(ArrayList<Song> songList) {
-        Intent putIntent = new Intent(getActivity(), MusicService.class);
-        putIntent.putExtra("SONG_LIST", songList);
-        requireActivity().startService(putIntent.setAction("LOAD_DATA"));
-    }
+
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
