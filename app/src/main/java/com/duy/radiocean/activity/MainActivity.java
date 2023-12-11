@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.animation.LinearInterpolator;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
     private boolean isBound = false;
     private ServiceConnection serviceConnection;
     RelativeLayout relativeLayout;
+    Handler handler;
+
     private ImageButton btnPlay;
     private TextView tvTitleSongPlaying, tvArtisSongPlaying;
     private CircleImageView imgSongPlaying;
@@ -69,15 +72,13 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         initWidgets();
         setButtonClickListeners();
         loadPlayingSongFromService();
-        checkMusicPlaybackStatus();
     }
 
 
     private void checkMusicPlaybackStatus() {
         if (isBound && musicService != null) {
-            Log.d("MainActivity My Test", "checkMusicPlaybackStatus() is running");
+//             Log.d("MainActivity My Test", "checkMusicPlaybackStatus() is running " + musicService.isPlaying());
             updatePlayPauseButtonsVisibility(musicService.isPlaying());
-            animationControl(musicService.isPlaying());
         }
     }
     private void initWidgets() {
@@ -85,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         tvTitleSongPlaying = findViewById(R.id.txtNameSongPlaying);
         tvArtisSongPlaying = findViewById(R.id.txtSingerPlaying);
         imgSongPlaying = findViewById(R.id.imgSongPlaying);
-        checkMusicPlaybackStatus();
     }
     private void setButtonClickListeners() {
         btnPlay.setOnClickListener(v -> {
@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
             }else{
                 musicService.pauseMusic();
             }
-            animationControl(musicService.isPlaying());
             updatePlayPauseButtonsVisibility(musicService.isPlaying());
         });
 
@@ -158,7 +157,8 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
             Picasso.get().load(songPlaying.getImgSong()).into(imgSongPlaying);
             tvTitleSongPlaying.setText(songPlaying.getTitle());
             tvArtisSongPlaying.setText(songPlaying.getArtist());
-            animationControl(musicService.isPlaying());
+            Log.e(null, "setValueForWidgets: " + musicService.isPlaying() );
+            updatePlayPauseButtonsVisibility(musicService.isPlaying());
         }
     }
     @Override
@@ -184,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         if (newSong != null) {
             songPlaying = newSong;
             setValueForWidgets();
-            updatePlayPauseButtonsVisibility(musicService.isPlaying());
             Log.d("MainActivity here", "CurrentSong is " + newSong.getTitle());
         }
     }

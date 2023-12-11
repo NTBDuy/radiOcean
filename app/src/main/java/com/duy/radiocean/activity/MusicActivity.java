@@ -48,6 +48,7 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             if (Objects.equals(intent.getAction(), "UPDATE_SEEK_BAR")) {
                 int currentPosition = intent.getIntExtra("CURRENT_POSITION", 0);
                 updateSeekBarPosition(currentPosition);
+                updatePlayPauseButtonsVisibility(musicService.isPlaying());
             }
         }
     };

@@ -39,6 +39,8 @@ public class MusicService extends Service {
     private ArrayList<Song> songList;
     private final String TAG = "SERVICE HERE";
     private final Handler handler = new Handler();
+    private int actionMusic;
+
 
     private static final int ACTION_PAUSE = 1;
     private static final int ACTION_PLAY = 2;
@@ -87,15 +89,27 @@ public class MusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        songList = intent.getParcelableArrayListExtra("listSongClicked", Song.class);
-        selectedSong = intent.getParcelableExtra("songClicked", Song.class);
-        currentSong = intent.getIntExtra("songPos", 0);
+        if(intent!=null){
+            if(intent.hasExtra("listSongClicked")){
+                songList = intent.getParcelableArrayListExtra("listSongClicked", Song.class);
+            }
+            if(intent.hasExtra("songClicked")){
+                selectedSong = intent.getParcelableExtra("songClicked", Song.class);
+
+            }
+            if(intent.hasExtra("songPos")){
+                currentSong = intent.getIntExtra("songPos", 0);
+            }
+            if(intent.hasExtra("action_music_service")){
+                 actionMusic = intent.getIntExtra("action_music_service", 0);
+            }
+        }
+
         for (Song song : songList) {
             Log.e(null, "song: " + song.getTitle());
         }
         Log.e(null, "songPos: " + currentSong);
 
-        int actionMusic = intent.getIntExtra("action_music_service", 0);
         Log.e(null, "onStartCommand: " + actionMusic);
         handleMusic(actionMusic);
         return START_STICKY;
@@ -305,7 +319,7 @@ public class MusicService extends Service {
                 Intent intent = new Intent("UPDATE_SEEK_BAR");
                 intent.putExtra("CURRENT_POSITION", currentPosition);
                 sendBroadcast(intent);
-                handler.postDelayed(this, 1000); // Update every second (adjust as needed).
+                handler.postDelayed( this, 1000); // Update every second (adjust as needed).
             }
         }, 1000); // Delayed start to match the update interval.
     }

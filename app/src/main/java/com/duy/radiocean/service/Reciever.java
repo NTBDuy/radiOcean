@@ -9,9 +9,9 @@ import android.util.Log;
 public class Reciever extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Bundle recieveBundle ;
         int actionMusic = intent.getIntExtra("action_music",0);
 
+        Log.e(null, "onReceive: "+ actionMusic );
 
         Intent serviceIntent = new Intent(context, MusicService.class);
         serviceIntent.putExtra("action_music_service",actionMusic);

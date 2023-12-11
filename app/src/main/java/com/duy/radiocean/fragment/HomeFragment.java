@@ -126,7 +126,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
         }else{
             Log.e(null, "putDataToService: null" );
         }
-
     }
 
     @Override
