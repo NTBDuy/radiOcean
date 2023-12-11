@@ -49,6 +49,8 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
                 int currentPosition = intent.getIntExtra("CURRENT_POSITION", 0);
                 updateSeekBarPosition(currentPosition);
                 updatePlayPauseButtonsVisibility(musicService.isPlaying());
+                updateLoopButtonUI(musicService.isLoopMode);
+                updateShuffleButtonUI(musicService.isShuffleMode);
             }
         }
     };
@@ -103,32 +105,31 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         });
 
         btnShuff.setOnClickListener(v -> {
-//            if(musicService!=null){
-//
-//            }
-//            updateShuffleButtonUI(musicService.isShuffle());
+            if(musicService!=null){
+                musicService.isShuffle();
+                updateShuffleButtonUI(musicService.isShuffleMode);
+            }
         });
 
         btnLoop.setOnClickListener(v -> {
-//           if(musicService!=null){
-//
-//           }
-//            // Update the UI to reflect the loop mode status
-//            updateLoopButtonUI(musicService.isLoop());
+           if(musicService!=null){
+               musicService.isLoop();
+               updateLoopButtonUI(musicService.isLoopMode);
+           }
         });
 
         btnNext.setOnClickListener(v -> {
             if(musicService!=null){
                 musicService.playNextTrack();
+                updatePlayPauseButtonsVisibility(musicService.isPlaying());
             }
-            updatePlayPauseButtonsVisibility(musicService.isPlaying());
         });
 
         btnPrev.setOnClickListener(v -> {
            if(musicService!=null){
                musicService.playPreviousTrack();
+               updatePlayPauseButtonsVisibility(musicService.isPlaying());
            }
-            updatePlayPauseButtonsVisibility(musicService.isPlaying());
         });
 
         // Set up the seek bar change listener
@@ -152,10 +153,8 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         btnShuff.setBackgroundResource(isShuffle ? R.drawable.shuffle_on : R.drawable.shuffle);
     }
 
-    private void updateLoopButtonUI(int isLoop) {
-        if (isLoop==1) btnLoop.setBackgroundResource(R.drawable.repeat_one_on);
-        else if (isLoop==2) btnLoop.setBackgroundResource(R.drawable.repeat_on);
-        else btnLoop.setBackgroundResource(R.drawable.repeat);
+    private void updateLoopButtonUI(boolean isLoop) {
+        btnLoop.setBackgroundResource(isLoop ? R.drawable.repeat_on : R.drawable.repeat);
     }
 
     private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
@@ -202,8 +201,6 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
             }
         }
         updatePlayPauseButtonsVisibility(musicService.isPlaying());
-        updateShuffleButtonUI(musicService.isShuffle());
-        updateLoopButtonUI(musicService.isLoop());
     }
     private void updateSeekBarPosition(int currentPosition) {
         seekBar.setProgress(currentPosition/1000);
@@ -234,8 +231,6 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         songPlaying = newSong;
         Log.e("NEXT SONG TEST", "onSongChanged is running!");
         updatePlayPauseButtonsVisibility(musicService.isPlaying());
-        updateShuffleButtonUI(musicService.isShuffle());
-        updateLoopButtonUI(musicService.isLoop());
         setValueForWidgets();
     }
 

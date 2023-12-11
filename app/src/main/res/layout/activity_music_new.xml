@@ -145,8 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
-                    android:backgroundTint="#FFF"
-                    android:progress="40" />
+                    android:backgroundTint="#FFF"/>
 
                     <ImageButton
                         android:id="@+id/btnPlayFromMusicNew"

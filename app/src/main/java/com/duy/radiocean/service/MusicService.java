@@ -27,6 +27,7 @@ import com.duy.radiocean.notification.MusicNotification;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MusicService extends Service {
     private final IBinder mBinder = new LocalBinder();
@@ -48,8 +49,8 @@ public class MusicService extends Service {
     private static final int ACTION_NEXT = 4;
     private static final int ACTION_STOP = 5;
     private static final int ACTION_RESUME = 6;
-    private boolean isShuffleMode = false;
-    private int isLoopMode = 0;
+    public boolean isShuffleMode = false;
+    public boolean isLoopMode = false;
 
 
     private Song selectedSong;
@@ -252,9 +253,31 @@ public class MusicService extends Service {
     }
 
     public void playNextTrack() {
+        if(isLoopMode){
+            playNextLoop();
+        }
+        else if(isShuffleMode){
+            playNextShuffle();
+        }
+        else {
+            playNextNormal();
+        }
+    }
+
+    private void playNextNormal(){
         currentSong++;
         if(currentSong>=songList.size()) currentSong=0;
         playMusic(songList.get(currentSong));
+    }
+
+    private void playNextLoop(){
+        playMusic(songList.get(currentSong));
+    }
+
+    private void playNextShuffle(){
+        currentSong = new Random().nextInt(songList.size());
+        Song nextSong = songList.get(currentSong);
+        playMusic(nextSong);
     }
 
     public void playPreviousTrack() {
@@ -306,10 +329,12 @@ public class MusicService extends Service {
     }
 
     public boolean isShuffle() {
+        isShuffleMode = !isShuffleMode;
         return isShuffleMode;
     }
 
-    public int isLoop() {
+    public boolean isLoop() {
+        isLoopMode = !isLoopMode;
         return isLoopMode;
     }
 
@@ -326,5 +351,4 @@ public class MusicService extends Service {
             }
         }, 1000); // Delayed start to match the update interval.
     }
-
 }
