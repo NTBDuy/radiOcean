@@ -118,17 +118,17 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
         });
 
         btnNext.setOnClickListener(v -> {
-//            if(musicService!=null){
-//                musicService.playNextTrack();
-//            }
-//            updatePlayPauseButtonsVisibility(musicService.isPlaying());
+            if(musicService!=null){
+                musicService.playNextTrack();
+            }
+            updatePlayPauseButtonsVisibility(musicService.isPlaying());
         });
 
         btnPrev.setOnClickListener(v -> {
-//           if(musicService!=null){
-//               musicService.playPreviousTrack();
-//           }
-//            updatePlayPauseButtonsVisibility(musicService.isPlaying());
+           if(musicService!=null){
+               musicService.playPreviousTrack();
+           }
+            updatePlayPauseButtonsVisibility(musicService.isPlaying());
         });
 
         // Set up the seek bar change listener

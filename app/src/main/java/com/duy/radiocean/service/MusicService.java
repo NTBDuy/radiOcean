@@ -252,13 +252,16 @@ public class MusicService extends Service {
     }
 
     public void playNextTrack() {
-
+        currentSong++;
+        if(currentSong>=songList.size()) currentSong=0;
+        playMusic(songList.get(currentSong));
     }
 
     public void playPreviousTrack() {
-
+        currentSong--;
+        if(currentSong<0) currentSong=songList.size()-1;
+        playMusic(songList.get(currentSong));
     }
-
 
     private void stopMusic() {
         Log.d(TAG, "STOP");
