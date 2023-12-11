@@ -41,8 +41,6 @@ public class MusicService extends Service {
     private final String TAG = "SERVICE HERE";
     private final Handler handler = new Handler();
     private int actionMusic;
-
-
     private static final int ACTION_PAUSE = 1;
     private static final int ACTION_PLAY = 2;
     private static final int ACTION_PREV = 3;
@@ -90,19 +88,19 @@ public class MusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(intent!=null){
-            if(intent.hasExtra("listSongClicked")){
+        if (intent != null) {
+            if (intent.hasExtra("listSongClicked")) {
                 songList = intent.getParcelableArrayListExtra("listSongClicked", Song.class);
             }
-            if(intent.hasExtra("songClicked")){
+            if (intent.hasExtra("songClicked")) {
                 selectedSong = intent.getParcelableExtra("songClicked", Song.class);
 
             }
-            if(intent.hasExtra("songPos")){
+            if (intent.hasExtra("songPos")) {
                 currentSong = intent.getIntExtra("songPos", 0);
             }
-            if(intent.hasExtra("action_music_service")){
-                 actionMusic = intent.getIntExtra("action_music_service", 0);
+            if (intent.hasExtra("action_music_service")) {
+                actionMusic = intent.getIntExtra("action_music_service", 0);
             }
         }
 
@@ -153,25 +151,15 @@ public class MusicService extends Service {
 
         // Create an Intent for the activity you want to start.
         Intent resultIntent = new Intent(this, MusicActivity.class);
-// Create the TaskStackBuilder and add the intent, which inflates the back
-// stack.
+        // Create the TaskStackBuilder and add the intent, which inflates the back stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(resultIntent);
-// Get the PendingIntent containing the entire back stack.
+        // Get the PendingIntent containing the entire back stack.
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(1,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-//        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.layout_notification);
-//        notificationLayout.setTextViewText(R.id.TvNotificationTitle, songPlaying.getTitle());
-//        notificationLayout.setTextViewText(R.id.TvNotificationArtist, songPlaying.getArtist());
-//
-//        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.layout_notification_expanded);
-//        notificationLayoutExpanded.setTextViewText(R.id.TvNotificationTitleExpanded, songPlaying.getTitle());
-//        notificationLayoutExpanded.setTextViewText(R.id.TvNotificationArtistExpanded, songPlaying.getArtist());
-
         notificationBuilder = new NotificationCompat.Builder(this, MusicNotification.ChannelId)
-//                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setSubText("now playing")
                 .setSmallIcon(R.drawable.music)
                 .setSound(uri)
@@ -179,8 +167,6 @@ public class MusicService extends Service {
                 .setContentTitle(songPlaying.getTitle())
                 .setContentText(songPlaying.getArtist())
                 .setLargeIcon(bitmap)
-//                .setCustomContentView(notificationLayout)
-//                .setCustomBigContentView(notificationLayoutExpanded)
                 .setContentIntent(resultPendingIntent)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1)
@@ -253,28 +239,26 @@ public class MusicService extends Service {
     }
 
     public void playNextTrack() {
-        if(isLoopMode){
+        if (isLoopMode) {
             playNextLoop();
-        }
-        else if(isShuffleMode){
+        } else if (isShuffleMode) {
             playNextShuffle();
-        }
-        else {
+        } else {
             playNextNormal();
         }
     }
 
-    private void playNextNormal(){
+    private void playNextNormal() {
         currentSong++;
-        if(currentSong>=songList.size()) currentSong=0;
+        if (currentSong >= songList.size()) currentSong = 0;
         playMusic(songList.get(currentSong));
     }
 
-    private void playNextLoop(){
+    private void playNextLoop() {
         playMusic(songList.get(currentSong));
     }
 
-    private void playNextShuffle(){
+    private void playNextShuffle() {
         currentSong = new Random().nextInt(songList.size());
         Song nextSong = songList.get(currentSong);
         playMusic(nextSong);
@@ -282,7 +266,7 @@ public class MusicService extends Service {
 
     public void playPreviousTrack() {
         currentSong--;
-        if(currentSong<0) currentSong=songList.size()-1;
+        if (currentSong < 0) currentSong = songList.size() - 1;
         playMusic(songList.get(currentSong));
     }
 
@@ -335,8 +319,7 @@ public class MusicService extends Service {
     public void isLoop() {
         isLoopMode = !isLoopMode;
     }
-
-
+    
     private void startUpdatingSeekBar() {
         handler.postDelayed(new Runnable() {
             @Override
@@ -345,7 +328,7 @@ public class MusicService extends Service {
                 Intent intent = new Intent("UPDATE_SEEK_BAR");
                 intent.putExtra("CURRENT_POSITION", currentPosition);
                 sendBroadcast(intent);
-                handler.postDelayed( this, 1000); // Update every second (adjust as needed).
+                handler.postDelayed(this, 1000); // Update every second (adjust as needed).
             }
         }, 1000); // Delayed start to match the update interval.
     }

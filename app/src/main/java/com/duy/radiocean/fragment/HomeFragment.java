@@ -44,7 +44,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
     private final ArrayList<Song> lstSong = new ArrayList<>();
     private final ArrayList<Album> lstAlbum = new ArrayList<>();
 
-    private  final int ACTION_PLAY = 2;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +120,8 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface, Mus
             putIntent.putExtra("songPos",position);
             putIntent.putParcelableArrayListExtra("listSongClicked", songList);
             putIntent.putExtra("songClicked",lstSong.get(position));
-            putIntent.putExtra("action_music_service",ACTION_PLAY);
+            int ACTION_PLAY = 2;
+            putIntent.putExtra("action_music_service", ACTION_PLAY);
             requireActivity().startService(putIntent);
         }else{
             Log.e(null, "putDataToService: null" );

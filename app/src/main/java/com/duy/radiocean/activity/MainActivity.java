@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.animation.LinearInterpolator;
@@ -35,8 +34,6 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
     private boolean isBound = false;
     private ServiceConnection serviceConnection;
     RelativeLayout relativeLayout;
-    Handler handler;
-
     private ImageButton btnPlay;
     private TextView tvTitleSongPlaying, tvArtisSongPlaying;
     private CircleImageView imgSongPlaying;
@@ -77,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
 
     private void checkMusicPlaybackStatus() {
         if (isBound && musicService != null) {
-//             Log.d("MainActivity My Test", "checkMusicPlaybackStatus() is running " + musicService.isPlaying());
             updatePlayPauseButtonsVisibility(musicService.isPlaying());
         }
     }
