@@ -328,14 +328,12 @@ public class MusicService extends Service {
 
     }
 
-    public boolean isShuffle() {
+    public void isShuffle() {
         isShuffleMode = !isShuffleMode;
-        return isShuffleMode;
     }
 
-    public boolean isLoop() {
+    public void isLoop() {
         isLoopMode = !isLoopMode;
-        return isLoopMode;
     }
 
 

@@ -1,7 +1,6 @@
 package com.duy.radiocean.activity;
 
 import android.annotation.SuppressLint;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -22,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.duy.radiocean.R;
 import com.duy.radiocean.model.Song;
 import com.duy.radiocean.service.MusicService;
-import com.duy.radiocean.service.Reciever;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -68,7 +66,6 @@ public class MusicActivity extends AppCompatActivity implements MusicService.OnS
     private void initWidgets() {
         btnBackFromMusicAct = findViewById(R.id.btnBackFromMusicNew);
         btnPlay = findViewById(R.id.btnPlayFromMusicNew);
-//        btnPause = findViewById(R.id.btnPauseFromMusicActi);
         btnNext = findViewById(R.id.btnNextFromMusicNew);
         btnPrev = findViewById(R.id.btnPreviousFromMusicNew);
         btnShuff = findViewById(R.id.btnShuffle);
