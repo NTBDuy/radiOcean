@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.duy.radiocean.R;
 import com.duy.radiocean.RecyclerViewInterface;
+import com.duy.radiocean.activity.MainActivity;
 import com.duy.radiocean.adapter.ListSongAdapter;
 import com.duy.radiocean.model.Album;
 import com.duy.radiocean.model.SharedViewModel;
@@ -48,6 +49,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
     private ListSongAdapter songAdapter;
     private final ArrayList<Song> lstSongInAlbum = new ArrayList<>();
     private static final int ACTION_PLAY = 2;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,6 +128,7 @@ public class AlbumFragment extends Fragment implements RecyclerViewInterface, Mu
     @Override
     public void onItemClick(int position) {
         putDataToService(lstSongInAlbum,position);
+
     }
 
     @Override

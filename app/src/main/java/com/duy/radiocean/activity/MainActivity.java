@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
     private TextView tvTitleSongPlaying, tvArtisSongPlaying;
     private CircleImageView imgSongPlaying;
     private Song songPlaying = new Song();
+    private  boolean isPlaying = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
         }
     }
 
-    private void updatePlayPauseButtonsVisibility(boolean isPlaying) {
+    public void updatePlayPauseButtonsVisibility(boolean isPlaying) {
         btnPlay.setBackgroundResource(isPlaying ? R.drawable.pause : R.drawable.play);
         animationControl(isPlaying);
     }
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements MusicService.OnSo
             tvTitleSongPlaying.setText(songPlaying.getTitle());
             tvArtisSongPlaying.setText(songPlaying.getArtist());
             Log.e(null, "setValueForWidgets: " + musicService.isPlaying() );
-            updatePlayPauseButtonsVisibility(musicService.isPlaying());
+            updatePlayPauseButtonsVisibility(true);
         }
     }
     @Override
